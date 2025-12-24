@@ -190,6 +190,258 @@
         font-size: 16px;
       }
     }
+
+    /* Modal PIX Styles */
+    .pix-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10005;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .pix-modal-overlay.active {
+      display: flex;
+    }
+
+    .pix-modal-container {
+      position: relative;
+      z-index: 10006;
+      max-width: 500px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUpModal 0.3s ease;
+    }
+
+    @keyframes slideUpModal {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .pix-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #747378;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.15s ease;
+      z-index: 10;
+    }
+
+    .pix-modal-close:hover {
+      background-color: #f5f5f5;
+      color: #000;
+    }
+
+    .pix-loading {
+      text-align: center;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pix-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e0e0e0;
+      border-radius: 50%;
+      border-top-color: #FE4908;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .pix-payment-content {
+      display: none;
+    }
+
+    .pix-section-title {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: #000;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .pix-qrcode-container {
+      text-align: center;
+      margin: 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #pix-modal-qrcode {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin: 0 auto;
+    }
+
+    #pix-modal-qrcode-img {
+      max-width: 200px;
+      height: auto;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .pix-copy-section {
+      margin-top: 24px;
+    }
+
+    .pix-input-group {
+      display: flex;
+      margin-bottom: 16px;
+      gap: 0;
+      width: 100%;
+    }
+
+    #pix-modal-code {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #e0e0e0;
+      border-right: none;
+      border-radius: 8px 0 0 8px;
+      font-size: 13px;
+      background: #fff;
+      color: #000;
+      font-family: "Roboto Mono", monospace;
+      height: 41px;
+      box-sizing: border-box;
+    }
+
+    .pix-copy-btn {
+      background: #FE4908;
+      color: white;
+      border: 1px solid #FE4908;
+      border-left: none;
+      padding: 0 20px;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 41px;
+    }
+
+    .pix-copy-btn.copied {
+      background: #10b981;
+      border-color: #10b981;
+    }
+
+    .pix-payment-info {
+      margin-top: 24px;
+      padding: 16px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .pix-info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .pix-payment-status {
+      margin-top: 20px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      border-left: 3px solid #FE4908;
+      display: none;
+    }
+
+    .pix-status-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pix-status-icon {
+      font-size: 20px;
+      color: #FE4908;
+    }
+
+    .pix-error-message {
+      color: #dc2626;
+      text-align: center;
+      padding: 16px;
+      background: #fff5f5;
+      border-radius: 8px;
+      margin-top: 16px;
+      border: 1px solid #fecaca;
+      display: none;
+      font-size: 14px;
+    }
+
+    @media (max-width: 767px) {
+      .pix-modal-container {
+        padding: 20px;
+        max-height: 95vh;
+      }
+
+      .pix-input-group {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      #pix-modal-code {
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        width: 100%;
+      }
+
+      .pix-copy-btn {
+        border-radius: 8px;
+        border: 1px solid #FE4908;
+        padding: 12px;
+        justify-content: center;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
