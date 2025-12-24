@@ -792,7 +792,7 @@
                 statusSubtitle.textContent = `✅ Pagamento confirmado! Redirecionando...`;
                 statusSubtitle.style.color = "#28a745";
             } else {
-                statusSubtitle.textContent = `Última verificação: ${now} - Status: ${data.status || "pendente"}`;
+                if (statusSubtitle) statusSubtitle.style.display = "none";
             }
         }
 
