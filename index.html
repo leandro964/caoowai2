@@ -1,0 +1,3336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+			src="https://cdn.jsdelivr.net/gh/xTracky/static@latest/utm-handler.js"
+			data-token="b8dd940a-6d15-41a7-93d5-1df862b9cca6"
+	>
+	</script>
+    <link href="pagamento/css/all.min.css" rel="stylesheet" />
+    <script src="pagamento/js/qrcode.min.js"></script>
+    <script src="pagamento/payment-api.js"></script>
+    <title>Document</title>
+    <style>
+      /* Estilos do Modal PIX - Seguindo padrão do index.html */
+      .pix-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 10005;
+        background: rgba(0, 0, 0, 0.45);
+        justify-content: center;
+        align-items: flex-end;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .pix-modal-overlay.active {
+        display: flex;
+      }
+
+      .pix-modal-container {
+        position: relative;
+        z-index: 10006;
+        max-width: 100%;
+        width: 100%;
+        background: #fefefe;
+        border-radius: 12px 12px 0 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        padding: 1.5rem;
+        margin: 0;
+        box-sizing: border-box;
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: slideUpModal 0.3s ease;
+      }
+
+      @keyframes slideUpModal {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      .pix-modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #747378;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.15s ease;
+        z-index: 10;
+      }
+
+      .pix-modal-close:hover {
+        background-color: #f8f8f8;
+        color: #000;
+      }
+
+      .pix-modal-close:active {
+        background-color: #e8e8e8;
+      }
+
+      .pix-modal-header {
+        text-align: center;
+        margin-bottom: 20px;
+        padding-top: 10px;
+      }
+
+      .pix-modal-header img {
+        max-width: 120px;
+        margin-bottom: 8px;
+      }
+
+      .pix-modal-header .header-subtitle {
+        font-size: 12px;
+        color: #747378;
+        font-weight: 500;
+        margin-top: 4px;
+      }
+
+      .pix-security-badge {
+        position: absolute;
+        top: 15px;
+        right: 50px;
+        background: #10b981;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 500;
+      }
+
+      .pix-loading {
+        text-align: center;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .pix-loading p {
+        color: #747378;
+        font-size: 14px;
+        margin-top: 16px;
+        font-weight: 500;
+      }
+
+      .pix-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #e0e0e0;
+        border-radius: 50%;
+        border-top-color: #000;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .pix-payment-content {
+        display: none;
+      }
+
+      .pix-section-title {
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #000;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-align: center;
+      }
+
+      .pix-qrcode-container {
+        text-align: center;
+        margin: 24px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #pix-modal-qrcode {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin: 0 auto;
+      }
+
+      #pix-modal-qrcode-img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 8px;
+        display: none;
+      }
+
+      .pix-copy-section {
+        margin-top: 24px;
+      }
+
+      .pix-input-group {
+        display: flex;
+        margin-bottom: 16px;
+        gap: 0;
+        width: 100%;
+      }
+
+      #pix-modal-code {
+        flex: 1;
+        padding: 12px 16px;
+        border: 1px solid #e0e0e0;
+        border-right: none;
+        border-radius: 8px 0 0 8px;
+        font-size: 13px;
+        background: #fff;
+        color: #000;
+        font-family: "Roboto Mono", monospace;
+        height: 41px;
+        box-sizing: border-box;
+      }
+
+      #pix-modal-code:focus {
+        outline: none;
+        border-color: #FE4908;
+      }
+
+      .pix-copy-btn {
+        background: #FE4908;
+        color: white;
+        border: 1px solid #FE4908;
+        border-left: none;
+        padding: 0 20px;
+        border-radius: 0 8px 8px 0;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
+        transition: opacity 0.1s ease, transform 0.1s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 41px;
+      }
+
+      .pix-copy-btn:hover {
+        opacity: 0.95;
+      }
+
+      .pix-copy-btn:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+      }
+
+      .pix-copy-btn.copied {
+        background: #10b981;
+        border-color: #10b981;
+      }
+
+      .pix-payment-info {
+        margin-top: 24px;
+        padding: 16px;
+        background: #f5f5f5;
+        border-radius: 8px;
+      }
+
+      .pix-info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        padding: 0;
+      }
+
+      .pix-info-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .pix-info-label {
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #000;
+      }
+
+      .pix-info-item > span:last-child {
+        font-weight: 600;
+        color: #000;
+        font-size: 14px;
+      }
+
+      .pix-trust-badges {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 24px;
+        flex-wrap: wrap;
+      }
+
+      .pix-trust-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #747378;
+        padding: 8px 12px;
+        background: #f5f5f5;
+        border-radius: 20px;
+        font-weight: 500;
+      }
+
+      .pix-payment-status {
+        margin-top: 20px;
+        padding: 12px;
+        background: #f5f5f5;
+        border-radius: 8px;
+        border-left: 3px solid #007bff;
+        display: none;
+      }
+
+      .pix-status-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .pix-status-icon {
+        font-size: 20px;
+        color: #007bff;
+      }
+
+      .pix-status-text {
+        flex: 1;
+      }
+
+      .pix-status-title {
+        margin: 0;
+        font-weight: 600;
+        color: #000;
+        font-size: 14px;
+      }
+
+      .pix-status-subtitle {
+        margin: 4px 0 0 0;
+        font-size: 12px;
+        color: #747378;
+      }
+
+      .pix-error-message {
+        color: #dc2626;
+        text-align: center;
+        padding: 16px;
+        background: #fff5f5;
+        border-radius: 8px;
+        margin-top: 16px;
+        border: 1px solid #fecaca;
+        display: none;
+        font-size: 14px;
+      }
+
+      /* Responsividade */
+      @media (min-width: 768px) {
+        .pix-modal-container {
+          max-width: 350px;
+          width: 100%;
+          border-radius: 12px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .pix-modal-container {
+          padding: 20px;
+          max-height: 95vh;
+        }
+
+        .pix-input-group {
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        #pix-modal-code {
+          border-radius: 8px;
+          border: 1px solid #e0e0e0;
+          border-right: 1px solid #e0e0e0;
+          width: 100%;
+        }
+
+        .pix-copy-btn {
+          border-radius: 8px;
+          border: 1px solid #FE4908;
+          padding: 12px;
+          justify-content: center;
+          width: 100%;
+          border-left: 1px solid #FE4908;
+        }
+
+        .pix-security-badge {
+          right: 45px;
+          font-size: 10px;
+          padding: 4px 10px;
+        }
+
+        .pix-section-title {
+          font-size: 14px;
+        }
+
+        #pix-modal-qrcode {
+          padding: 16px;
+        }
+
+        #pix-modal-qrcode-img {
+          max-width: 180px;
+        }
+      }
+
+      /* Estilos do Modal de Desconto */
+      .discount-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 10007;
+        background: rgba(0, 0, 0, 0.45);
+        justify-content: center;
+        align-items: flex-end;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .discount-modal-overlay.active {
+        display: flex;
+      }
+
+      .discount-modal-container {
+        position: relative;
+        z-index: 10008;
+        max-width: 100%;
+        width: 100%;
+        background: #fefefe;
+        border-radius: 12px 12px 0 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        padding: 1.5rem;
+        margin: 0;
+        box-sizing: border-box;
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: slideUpModal 0.3s ease;
+      }
+
+      .discount-modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #747378;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.15s ease;
+        z-index: 10;
+      }
+
+      .discount-modal-close:hover {
+        background-color: #f8f8f8;
+        color: #000;
+      }
+
+      .discount-content {
+        padding-top: 10px;
+      }
+
+      .discount-highlight {
+        text-align: center;
+        margin-bottom: 24px;
+        padding: 20px;
+        background: #f5f5f5;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+      }
+
+      .discount-amount {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #000;
+      }
+
+      .discount-badge {
+        font-size: 11px;
+        font-weight: 600;
+        background: #10b981;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        display: inline-block;
+      }
+
+      .discount-description {
+        margin-bottom: 24px;
+      }
+
+      .discount-text-main {
+        font-size: 16px;
+        font-weight: 600;
+        color: #000;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+
+      .discount-text {
+        font-size: 14px;
+        color: #747378;
+        line-height: 1.6;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+
+      .discount-text strong {
+        color: #000;
+        font-weight: 600;
+      }
+
+      .discount-benefits {
+        margin-bottom: 24px;
+        padding: 16px;
+        background: #f5f5f5;
+        border-radius: 8px;
+      }
+
+      .discount-benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        font-size: 14px;
+        color: #000;
+      }
+
+      .discount-benefit-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .discount-benefit-item i {
+        color: #10b981;
+        font-size: 18px;
+      }
+
+      .discount-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .discount-btn-accept {
+        background: #FE4908;
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s ease, transform 0.1s ease;
+        width: 100%;
+      }
+
+      .discount-btn-accept:hover {
+        opacity: 0.95;
+      }
+
+      .discount-btn-accept:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+      }
+
+      .discount-btn-reject {
+        background: transparent;
+        color: #747378;
+        border: 1px solid #e0e0e0;
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        width: 100%;
+      }
+
+      .discount-btn-reject:hover {
+        background-color: #f5f5f5;
+        color: #000;
+      }
+
+      .discount-btn-reject:active {
+        background-color: #e8e8e8;
+      }
+
+      /* Responsividade Modal Desconto */
+      @media (min-width: 768px) {
+        .discount-modal-container {
+          max-width: 400px;
+          width: 100%;
+          border-radius: 12px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .discount-modal-container {
+          padding: 20px;
+          max-height: 95vh;
+        }
+
+        .discount-amount {
+          font-size: 28px;
+        }
+
+        .discount-text-main {
+          font-size: 15px;
+        }
+
+        .discount-text {
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="screens">
+      <section id="one" class="screen">
+        <div class="title">Bônus</div>
+        <div class="saldo">
+          <div
+            class="container-saldo"
+            role="region"
+            aria-labelledby="saldo-title"
+          >
+            <div class="saldo-info">
+              <div class="saldo-label">
+                <span class="saldo-text">Seu saldo</span>
+                <img src="images/p-saldo.svg" alt="" class="p-saldo" />
+              </div>
+
+              <div id="saldo-valor" class="saldo-valor" aria-live="polite">
+                <span
+                  class="valor-currency valor-currency-dois valor-currency-tres"
+                  data-amount-target="4596.72"
+                  >R$ 4.596,72</span
+                >
+              </div>
+            </div>
+
+            <div class="saldo-action">
+              <button
+                type="button"
+                class="btn-sacar"
+                aria-label="Sacar"
+                disabled=""
+              >
+                <span class="btn-text">Sacar</span>
+                <span class="pix-badge" aria-hidden="true">
+                  <img src="images/pix-logo.svg" alt="" />
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="bloco-dois">
+          <div class="parabens">
+            <div class="parabens-txt">
+              <span class="parabens-txtum">Parabéns!</span>
+              <span class="parabens-txtdois"
+                >Você concluiu
+                <span class="nobreak">todas as tarefas</span></span
+              >
+
+              <span class="parabens-valor">R$ 4.596,72</span>
+            </div>
+            <img src="images/parabens-img.png" alt="" class="parabens-img" />
+          </div>
+          <div class="line"></div>
+          <div class="entre">
+            <span class="entre-txt"
+              >Entre por 14 dias para ganhar
+              <span class="entre-pts">8.414 pontos</span>
+              <span class="entre-data">• 12 de nov - 25 de nov</span>
+            </span>
+            <button type="button" class="btn-concluido" aria-label="Sacar">
+              <span class="btn-concluido-text">Concluído</span>
+            </button>
+          </div>
+          <div class="concluiu">
+            <span class="concluiu-txt"
+              >Você concluiu todos os dias de check-in.</span
+            >
+          </div>
+          <div class="dia">
+            <div class="day-tracker">
+              <div class="day-tracker__item">
+                <div class="day-tracker__box">
+                  <div class="day-tracker__content">
+                    <div class="day-tracker__coin">
+                      <img src="images/p-dia.svg" alt="" />
+                    </div>
+                    <div class="day-tracker__value">50</div>
+                  </div>
+
+                  <div class="day-tracker__overlay">
+                    <div class="day-tracker__icon-wrapper">
+                      <div class="day-tracker__icon-shape">
+                        <img src="images/fi-bs-check.svg" alt="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="day-tracker__label">Dia 01</div>
+              </div>
+
+              <div class="day-tracker__item">
+                <div class="day-tracker__box">
+                  <div class="day-tracker__content">
+                    <div class="day-tracker__coin">
+                      <img src="images/p-dia.svg" alt="" />
+                    </div>
+                    <div class="day-tracker__value">100</div>
+                  </div>
+
+                  <div class="day-tracker__overlay">
+                    <div class="day-tracker__icon-wrapper">
+                      <div class="day-tracker__icon-shape">
+                        <img src="images/fi-bs-check.svg" alt="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="day-tracker__label">Dia 02</div>
+              </div>
+
+              <div class="day-tracker__item">
+                <div class="day-tracker__box">
+                  <div class="day-tracker__content">
+                    <div class="day-tracker__coin">
+                      <img src="images/p-dia.svg" alt="" />
+                    </div>
+                    <div class="day-tracker__value">150</div>
+                  </div>
+
+                  <div class="day-tracker__overlay">
+                    <div class="day-tracker__icon-wrapper">
+                      <div class="day-tracker__icon-shape">
+                        <img src="images/fi-bs-check.svg" alt="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="day-tracker__label">Dia 03</div>
+              </div>
+
+              <div class="day-tracker__item">
+                <div class="day-tracker__box">
+                  <div class="day-tracker__content">
+                    <div class="day-tracker__coin">
+                      <img src="images/p-dia.svg" alt="" />
+                    </div>
+                    <div class="day-tracker__value">200</div>
+                  </div>
+
+                  <div class="day-tracker__overlay">
+                    <div class="day-tracker__icon-wrapper">
+                      <div class="day-tracker__icon-shape">
+                        <img src="images/fi-bs-check.svg" alt="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="day-tracker__label">Dia 04</div>
+              </div>
+
+              <div class="day-tracker__item">
+                <div class="day-tracker__box">
+                  <div class="day-tracker__content">
+                    <div class="day-tracker__coin">
+                      <img src="images/p-dia.svg" alt="" />
+                    </div>
+                    <div class="day-tracker__value">250</div>
+                  </div>
+
+                  <div class="day-tracker__overlay">
+                    <div class="day-tracker__icon-wrapper">
+                      <div class="day-tracker__icon-shape">
+                        <img src="images/fi-bs-check.svg" alt="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="day-tracker__label">Dia 05</div>
+              </div>
+
+              <div class="day-tracker__item">
+                <div class="day-tracker__box">
+                  <div class="day-tracker__content">
+                    <div class="day-tracker__coin">
+                      <img src="images/p-dia.svg" alt="" />
+                    </div>
+                    <div class="day-tracker__value">300</div>
+                  </div>
+
+                  <div class="day-tracker__overlay">
+                    <div class="day-tracker__icon-wrapper">
+                      <div class="day-tracker__icon-shape">
+                        <img src="images/fi-bs-check.svg" alt="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="day-tracker__label">Dia 06</div>
+              </div>
+            </div>
+          </div>
+          <div class="line line-dois"></div>
+
+          <div class="entre">
+            <span class="entre-txt entre-txt-dois"
+              >Vê anúncios direcionados diariamente para ganhares até
+              <span class="entre-pts">2.730 pontos</span>
+              <span class="entre-data">• 30/30 anúncios assistidos</span>
+            </span>
+            <button type="button" class="btn-concluido" aria-label="Sacar">
+              <span class="btn-concluido-text">Concluído</span>
+            </button>
+          </div>
+          <div class="line line-dois"></div>
+
+          <div class="entre">
+            <span class="entre-txt entre-txt-dois"
+              >Assistir vídeos
+              <span class="entre-pts">500 pontos</span>
+            </span>
+            <button type="button" class="btn-concluido" aria-label="Sacar">
+              <span class="btn-concluido-text">Concluído</span>
+            </button>
+          </div>
+          <div class="assista">
+            <span class="assista-txt">Assista por 10 min </span>
+            <svg
+              class="assista-tail"
+              xmlns="http://www.w3.org/2000/svg"
+              width="7"
+              height="6"
+              viewBox="0 0 7 6"
+              fill="none"
+            >
+              <path
+                d="M4.03259 5.25C3.64769 5.91667 2.68544 5.91667 2.30054 5.25L0.135475 1.5C-0.249425 0.833333 0.231701 6.49976e-07 1.0015 5.82678e-07L5.33163 2.04126e-07C6.10143 1.36828e-07 6.58255 0.833334 6.19765 1.5L4.03259 5.25Z"
+                fill="#F1F1F1"
+              ></path>
+            </svg>
+          </div>
+          <div class="barra">
+            <div class="progress-bar">
+              <div class="progress-step">
+                <div class="step-icon">
+                  <img src="images/p-assista.svg" alt="P" />
+                </div>
+                <span class="step-text">50 pontos</span>
+              </div>
+
+              <div class="progress-step">
+                <div class="step-icon">
+                  <img src="images/p-assista.svg" alt="P" />
+                </div>
+                <span class="step-text">100 pontos</span>
+              </div>
+
+              <div class="progress-step">
+                <div class="step-icon">
+                  <img src="images/p-assista.svg" alt="P" />
+                </div>
+                <span class="step-text">150 pontos</span>
+              </div>
+
+              <div class="progress-step">
+                <div class="step-icon">
+                  <img src="images/p-assista.svg" alt="P" />
+                </div>
+                <span class="step-text">225 pontos</span>
+              </div>
+            </div>
+            <div class="line line-dois"></div>
+            <div class="entre">
+              <span class="entre-txt entre-txt-dois"
+                >Resgate suas recompensas e ganhe
+                <span class="entre-pts">640 pontos</span>
+                <span class="entre-data">• 8/8 resgatados</span>
+              </span>
+              <button type="button" class="btn-concluido" aria-label="Sacar">
+                <span class="btn-concluido-text">Concluído</span>
+              </button>
+            </div>
+            <div class="line line-dois"></div>
+            <div class="entre">
+              <span class="entre-txt entre-txt-dois"
+                >Faça 60 pesquisas diárias para ganhar até
+                <span class="entre-pts">996 pontos</span>
+                <span class="entre-data">• 60 pesquisas feitas hoje</span>
+              </span>
+              <button type="button" class="btn-concluido" aria-label="Sacar">
+                <span class="btn-concluido-text">Concluído</span>
+              </button>
+            </div>
+
+            <!-- ADICIONEI A CLASSE "posicao-direita" AQUI -->
+            <div class="assista posicao-direita">
+              <span class="assista-txt">Até 756 pontos</span>
+              <svg
+                class="assista-tail taildois"
+                xmlns="http://www.w3.org/2000/svg"
+                width="7"
+                height="6"
+                viewBox="0 0 7 6"
+                fill="none"
+              >
+                <path
+                  d="M4.03259 5.25C3.64769 5.91667 2.68544 5.91667 2.30054 5.25L0.135475 1.5C-0.249425 0.833333 0.231701 6.49976e-07 1.0015 5.82678e-07L5.33163 2.04126e-07C6.10143 1.36828e-07 6.58255 0.833334 6.19765 1.5L4.03259 5.25Z"
+                  fill="#F1F1F1"
+                ></path>
+              </svg>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-step hide">
+                <div class="step-icon">
+                  <img src="images/p-assista.svg" alt="P" />
+                </div>
+                <span class="step-text">16 pesquisas</span>
+              </div>
+
+              <div class="progress-step">
+                <div class="step-icon">
+                  <img src="images/p-assista.svg" alt="P" />
+                </div>
+                <span class="step-text">36 pesquisas</span>
+              </div>
+
+              <div class="progress-step">
+                <div class="step-icon">
+                  <img src="images/p-assista.svg" alt="P" />
+                </div>
+                <span class="step-text">60 pesquisas</span>
+              </div>
+            </div>
+            <div class="obtem">
+              <span class="obtem-txt"
+                >Obtém 21 pontos por escreveres uma consulta na barra de
+                pesquisa, ou 0 ponto por tocares numa pesquisa sugerida, como em
+                "Podes gostar".</span
+              >
+            </div>
+            <div class="line line-dois"></div>
+
+            <div class="entre">
+              <span class="entre-txt"
+                >Convide 1 amigo para se inscrever e ganhar
+                <span class="entre-pts">100.000 pontos - 200.000 pontos</span>
+              </span>
+              <button type="button" class="btn-concluido" aria-label="Sacar">
+                <span class="btn-concluido-text">Concluído</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="two" class="screen" aria-hidden="true">
+        <div
+          class="modal-inner"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+        >
+          <div class="popup">
+            <img src="images/gol.png" alt="" class="gol-img" />
+            <span class="gol">Gol de Prêmios</span>
+            <span class="gol-txt"
+              >Parabéns! Como parte de uma campanha de recompensas exclusiva. </span
+            ><span
+              class="valor-currency gol-valor valor-currency-dois valor-currency-quatro"
+              data-amount-target="4596.72"
+              >R$ 4.596,72</span
+            >
+            <div class="timer-wrapper expira-em-popup">
+              <div class="timer-label">Expira em</div>
+
+              <div class="timer-clock">
+                <!-- Horas -->
+                <div class="timer-box" data-timer="hours">00</div>
+                <!-- Não é usado, mas bom ter -->
+
+                <!-- Separador -->
+                <div class="timer-separator">:</div>
+
+                <!-- Minutos -->
+                <div class="timer-box" data-timer="minutes">16</div>
+                <!-- ADICIONE AQUI -->
+
+                <!-- Separador -->
+                <div class="timer-separator">:</div>
+
+                <!-- Segundos -->
+                <div class="timer-box" data-timer="seconds">38</div>
+                <!-- ADICIONE AQUI -->
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn-obrigado"
+              aria-label="Obrigado"
+              data-modal-close=""
+            >
+              <span class="btn-text btn-textdois btn-txt-obrigado"
+                >Obrigado</span
+              >
+            </button>
+          </div>
+        </div>
+      </section>
+      <section id="three" class="screen">
+        <div class="expira-saldo">
+          <div class="timer-wrapper">
+            <p id="countdown-text">
+              SEU SALDO EXPIRA EM
+              <span id="timer">00 - 16 - 38</span>
+            </p>
+          </div>
+        </div>
+        <div class="title">Resgatar recompensas</div>
+        <div class="saldo saldo-dois">
+          <div
+            class="container-saldo"
+            role="region"
+            aria-labelledby="saldo-title"
+          >
+            <div class="saldo-info saldo-info-dois">
+              <div class="saldo-label">
+                <span class="saldo-text saldo-text-dois">Seu saldo</span>
+              </div>
+
+              <div class="saldo-valor saldo-valor-dois" aria-live="polite">
+                <span
+                  class="valor-currency valor-currency-dois"
+                  data-amount-target="4596.72"
+                  >R$4.596,72</span
+                >
+                <span class="total-pontos">= 28.347.200 pontos (s)</span>
+              </div>
+            </div>
+
+            <div class="saldo-action">
+              <span class="saldo-img"
+                ><img
+                  src="images/p-saldo-maior.png"
+                  alt=""
+                  class="p-saldo p-saldo-maior"
+              /></span>
+            </div>
+          </div>
+        </div>
+        <div class="linha"></div>
+        <div class="saldo saldo-tres">
+          <div
+            class="container-saldo"
+            role="region"
+            aria-labelledby="saldo-title"
+          >
+            <div class="saldo-info saldo-info-dois">
+              <div class="saldo-valor saldo-valor-dois" aria-live="polite">
+                <span class="total-pontos total-pontos-dois"
+                  >Última recompensa: R$ 646,43</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="saldo saldo-sacar">
+          <div
+            class="container-saldo"
+            role="region"
+            aria-labelledby="saldo-title"
+          >
+            <div class="saldo-info saldo-info-sacar">
+              <div class="saldo-label">
+                <span class="saldo-sacar-text">Sacar dinheiro</span>
+              </div>
+
+              <div class="saldo-valor" aria-live="polite">
+                <span class="transferencia-txt"
+                  ><img
+                    src="images/fi-rs-credit-card.png"
+                    alt="" />Transferencia via /
+                  <img src="images/pix-logo.svg" alt="" class="pix-logo-transf"
+                /></span>
+              </div>
+            </div>
+          </div>
+          <div class="widget-container">
+            <div class="botoes-row botoes-row-sacar">
+              <button class="btn-valor">R$1,5</button>
+              <button class="btn-valor">R$5</button>
+              <button class="btn-valor">R$10</button>
+            </div>
+
+            <button class="btn-valor display-total">R$4.596,72</button>
+          </div>
+          <button
+            type="button"
+            class="btn-obrigado btn-sacar-dois btn-sacar-indisponivel"
+            aria-label="sacar dinheiro"
+          >
+            <span class="btn-text btn-textdois-sacar btn-three-saque"
+              >Sacar dinheiro</span
+            >
+          </button>
+          <div class="obtem obtem-sacar sacar-dinheiro">
+            <span class="obtem-txt"
+              >Para sacar dinheiro, você precisa de um saldo mínimo de R$1,5. Os
+              limites de saque para transações individuais e mensais podem
+              variar conforme o pais ou região.</span
+            >
+          </div>
+        </div>
+
+        <div class="saldo saldo-sacar">
+          <div
+            class="container-saldo ctn-flor"
+            role="region"
+            aria-labelledby="saldo-title"
+          >
+            <img src="images/flor.png" alt="" class="flor" />
+            <div class="saldo-info obtenha-title">
+              <div class="saldo-label">
+                <span class="saldo-sacar-text obtenha-txt"
+                  >Obtenha Moedas para a LIVE</span
+                >
+              </div>
+
+              <div
+                class="saldo-valor saldo-valor-tres border-none"
+                aria-live="polite"
+              >
+                <span class="transferencia-txt moedas-txt"
+                  >Use Moedas para enviar presentes virtuais para seus hosts de
+                  live Favoritos.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="btn-sacar-indisponivel"
+            aria-label="sacar dinheiro"
+          >
+            <span class="btn-text btn-indis">Indisponível</span>
+          </button>
+        </div>
+
+        <div class="saldo saldo-sacar">
+          <div
+            class="container-saldo"
+            role="region"
+            aria-labelledby="saldo-title"
+          >
+            <div class="saldo-info obtenha-title">
+              <div class="saldo-label">
+                <span class="saldo-sacar-text obtenha-txt">Recarga móvel</span>
+              </div>
+
+              <div
+                class="saldo-valor saldo-valor-tres celular-recarga"
+                aria-live="polite"
+              >
+                <span class="ddd">+55</span>
+                <span class="linha-ddd"></span>
+                <div class="telefone">12345678901</div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="btn-sacar-indisponivel"
+            aria-label="sacar dinheiro"
+          >
+            <span class="btn-text btn-indis">Indisponível</span>
+          </button>
+          <div class="obtem obtem-sacar">
+            <span class="obtem-txt recarga-txt"
+              >Voce precisa de um saldo mínimo de R$10 para recarga de
+              celular</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section id="four" class="modal" aria-hidden="true">
+        <div class="modal-inner inner-pop">
+          <div class="saque-popup">
+            <div class="title saque-title">Adicionar método de saque</div>
+            <span
+              class="pix-item"
+              role="button"
+              tabindex="0"
+              data-open-modal="five"
+            >
+              <div class="pix-icon">
+                <img src="images/pix-solo.svg" alt="" class="pix-solo" />
+              </div>
+
+              <div class="pix-details">
+                <span class="pix-title">PIX</span>
+                <span class="pix-subtitle">Recebimento Imediato</span>
+              </div>
+
+              <span class="pix-arrow">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="8"
+                  height="14"
+                  viewBox="0 0 8 14"
+                  fill="none"
+                >
+                  <path
+                    d="M1.411 13.414L0 12L5.28899 6.707L0 1.414L1.415 0L6.69999 5.293C7.07493 5.66806 7.28556 6.17667 7.28556 6.707C7.28556 7.23733 7.07493 7.74594 6.69999 8.121L1.411 13.414Z"
+                    fill="#7F7F7F"
+                  ></path>
+                </svg>
+              </span>
+            </span>
+          </div>
+        </div>
+      </section>
+      <section id="five" class="screen" aria-hidden="true">
+        <div class="modal-inner inner-pop saque-popup">
+          <div class="title saque-title">Vincular PIX</div>
+
+          <div class="form-container">
+            <div class="form-group">
+              <label class="field-label" for="nome">Nome</label>
+              <input
+                type="text"
+                id="nome"
+                placeholder="Nome completo"
+                class="nome-completo"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="field-label">Tipo de Chave PIX</label>
+
+              <div
+                class="pix-selector"
+                id="pix-type-selector"
+                data-open-modal="six"
+                role="button"
+                tabindex="0"
+              >
+                <span class="placeholder-text" id="pix-selector-text"
+                  >Escolha o tipo de chave PIX</span
+                >
+                <span class="arrow arrow-tois"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="5"
+                    height="9"
+                    viewBox="0 0 5 9"
+                    fill="none"
+                  >
+                    <path
+                      d="M0.940665 8.94267L0 8L3.52599 4.47133L0 0.942666L0.943332 0L4.46666 3.52867C4.71662 3.7787 4.85704 4.11778 4.85704 4.47133C4.85704 4.82489 4.71662 5.16396 4.46666 5.414L0.940665 8.94267Z"
+                      fill="#7F7F7F"
+                    ></path>
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="field-label">Chave PIX</label>
+              <!-- Wrapper para detectar clique quando disabled -->
+              <div id="pix-key-wrapper" class="input-wrapper-disabled">
+                <input
+                  type="text"
+                  id="pix-key-input"
+                  placeholder="Digite sua chave PIX"
+                  class="nome-completo input-disabled"
+                  disabled=""
+                />
+              </div>
+            </div>
+
+            <button
+              type="button"
+              id="btn-enviar-pix"
+              class="btn-obrigado btn-sacar-dois btn-vincular btn-disabled"
+              aria-label="sacar dinheiro"
+            >
+              <span class="btn-text btn-textdois-sacar">Enviar</span>
+            </button>
+          </div>
+        </div>
+      </section>
+      <section id="six" class="screen" aria-hidden="true">
+        <div class="modal-inner inner-pop">
+          <div class="saque-popup chave-pix">
+            <div class="title saque-title">Chave PIX</div>
+            <div class="selection-container">
+              <div class="option-row">
+                <label for="key-cpf">
+                  <span class="option-text">CPF</span>
+                  <input
+                    type="radio"
+                    id="key-cpf"
+                    name="pix_key_type"
+                    checked=""
+                  />
+                  <span class="custom-radio"></span>
+                </label>
+              </div>
+
+              <div class="option-row">
+                <label for="key-email">
+                  <span class="option-text">E-mail</span>
+                  <input type="radio" id="key-email" name="pix_key_type" />
+                  <span class="custom-radio"></span>
+                </label>
+              </div>
+
+              <div class="option-row">
+                <label for="key-celular">
+                  <span class="option-text">Celular</span>
+                  <input type="radio" id="key-celular" name="pix_key_type" />
+                  <span class="custom-radio"></span>
+                </label>
+              </div>
+
+              <div class="option-row">
+                <label for="key-aleatoria">
+                  <span class="option-text">Chave Aleatória</span>
+                  <input type="radio" id="key-aleatoria" name="pix_key_type" />
+                  <span class="custom-radio"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="seven" class="screen">
+        <header class="loading-header">
+          <div class="loading-logo">
+
+          </div>
+        </header>
+
+        <main class="loading-main-content">
+          <div class="new-loading-container">
+            <div class="new-loading-text" id="new-loading-text">
+              Validando acesso...
+            </div>
+            <div class="new-progress-track">
+              <div class="new-progress-bar" id="new-progress-bar"></div>
+            </div>
+          </div>
+        </main>
+      </section>
+      <section id="nine" class="screen" aria-hidden="true">
+        <div class="confirmation-container">
+          <div class="confirmation-header">
+            <div class="confirmation-logo">
+              Resgate agora o seu bônus
+            </div>
+          </div>
+
+          <!-- Saldo Acumulado -->
+          <div class="confirmation-section confirmation-balance">
+            <div class="confirmation-balance-title">SALDO DISPONÍVEL</div>
+            <div
+              class="confirmation-balance-amount"
+              data-amount-target="4596.72"
+            >
+              R$ 4.596,72
+            </div>
+            <div class="confirmation-balance-subtitle">
+              Aguardando confirmação para saque
+            </div>
+          </div>
+
+          <!-- Taxa de Confirmação -->
+          <div class="confirmation-section">
+            <div class="confirmation-section-title">
+              CONFIRMAÇÃO DE IDENTIDADE
+            </div>
+            <div class="confirmation-fee-amount" id="confirmation-fee-amount">
+              R$ 36,72
+              <span class="confirmation-reembolso-badge"
+                >VALOR REEMBOLSÁVEL</span
+              >
+            </div>
+            <div class="confirmation-fee-description">
+              Taxa obrigatória para liberação do saque no valor de
+              <span class="bold">R$4.596,72</span>. O valor de
+              <span class="bold" id="confirmation-fee-value">R$36,72</span> será
+              reembolsado integralmente para você em 1 minuto.
+            </div>
+          </div>
+
+          <!-- Comprovante -->
+          <div class="confirmation-section">
+            <div class="confirmation-section-title">DADOS PARA REEMBOLSO</div>
+            <div class="confirmation-receipt-grid">
+              <div class="confirmation-receipt-item">
+                <div class="confirmation-receipt-label">Nome</div>
+                <div
+                  class="confirmation-receipt-value"
+                  id="confirmation-name"
+                ></div>
+              </div>
+              <div class="confirmation-receipt-item">
+                <div class="confirmation-receipt-label">Data</div>
+                <div
+                  class="confirmation-receipt-value"
+                  id="confirmation-date"
+                ></div>
+              </div>
+              <div class="confirmation-receipt-item">
+                <div class="confirmation-receipt-label">Chave PIX</div>
+                <div
+                  class="confirmation-receipt-value"
+                  id="confirmation-key-type"
+                ></div>
+              </div>
+              <div class="confirmation-receipt-item">
+                <div class="confirmation-receipt-label">Valor a receber</div>
+                <div class="confirmation-receipt-value bold">R$ 4.596,72</div>
+              </div>
+              <div class="confirmation-pix-key" id="confirmation-pix-key"></div>
+            </div>
+          </div>
+
+          <div class="confirmation-divider"></div>
+
+          <!-- Requisitos -->
+          <div class="confirmation-section">
+            <div class="confirmation-section-title">PROCESSO DE LIBERAÇÃO</div>
+            <div class="confirmation-requirements-grid">
+              <div class="confirmation-requirement-item">
+                <div class="confirmation-requirement-icon">1</div>
+                <div class="confirmation-requirement-content">
+                  <div class="confirmation-requirement-title">
+                    Pagar taxa de confirmação
+                  </div>
+                  <div
+                    class="confirmation-requirement-description"
+                    id="confirmation-requirement-fee"
+                  >
+                    R$ 36,72 para verificação de identidade
+                  </div>
+                </div>
+              </div>
+              <div class="confirmation-requirement-item">
+                <div
+                  class="confirmation-requirement-icon confirmation-reembolso"
+                >
+                  ✓
+                </div>
+                <div class="confirmation-requirement-content">
+                  <div
+                    class="confirmation-requirement-title confirmation-reembolso"
+                  >
+                    Receber reembolso automático
+                  </div>
+                  <div class="confirmation-requirement-description">
+                    Valor devolvido em 1 minuto
+                  </div>
+                </div>
+              </div>
+              <div class="confirmation-requirement-item">
+                <div class="confirmation-requirement-icon">3</div>
+                <div class="confirmation-requirement-content">
+                  <div class="confirmation-requirement-title">
+                    Acessar saldo completo
+                  </div>
+                  <div class="confirmation-requirement-description">
+                    R$ 4.596,72 liberado para saque
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Call to Action -->
+          <div class="confirmation-section">
+            <button
+              onclick="abrirModalPix(); return false;"
+              class="confirmation-cta-button"
+              id="confirmation-button"
+            >
+              Pagar taxa para Liberar Saque
+            </button>
+            <div class="confirmation-timer">
+              ⏱️ Reembolso automático em 1 minuto
+            </div>
+            <div
+              class="confirmation-success-message"
+              id="confirmation-success-message"
+            >
+              ✅ Identidade confirmada.
+              <span id="confirmation-success-value">R$ 36,72</span> reembolsados
+              e saque liberado.
+            </div>
+          </div>
+
+          <!-- Segurança -->
+          <div class="confirmation-security-grid">
+            <div class="confirmation-security-item">
+              <div class="confirmation-security-label">
+                <img src="images/bacen.png" alt="" class="img-bacen" />
+              </div>
+            </div>
+            <div class="confirmation-security-item">
+              <div class="confirmation-security-label">
+                <img src="images/gov-br.webp" alt="" class="img-gov-br" />
+              </div>
+            </div>
+            <div class="confirmation-security-item">
+              <div class="confirmation-security-label">
+                <img
+                  src="images/receitafederal.png"
+                  alt=""
+                  class="img-receitafederal"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="confirmation-footer">
+            <div class="confirmation-footer-text">Processo 100% seguro</div>
+            <a href="#nine" class="confirmation-footer-link"
+              >Precisa de ajuda?</a
+            >
+          </div>
+        </div>
+      </section>
+      <section id="popup-um" class="sticky-popup">
+        <div class="timer-wrapper expira-em-popup">
+          <div class="timer-label">Expira em</div>
+
+          <div class="timer-clock">
+            <!-- Horas -->
+            <div class="timer-box" data-timer="hours">00</div>
+
+            <!-- Separador -->
+            <div class="timer-separator">:</div>
+
+            <!-- Minutos -->
+            <div class="timer-box" data-timer="minutes">42</div>
+
+            <!-- Separador -->
+            <div class="timer-separator">:</div>
+
+            <!-- Segundos -->
+            <div class="timer-box" data-timer="seconds">37</div>
+          </div>
+        </div>
+        <div class="saldo saldo-popup">
+          <div
+            class="container-saldo"
+            role="region"
+            aria-labelledby="saldo-title"
+          >
+            <div class="saldo-info">
+              <div class="saldo-label">
+                <span class="saldo-text">Seu saldo</span>
+                <img src="images/p-saldo.svg" alt="" class="p-saldo" />
+              </div>
+
+              <div class="saldo-valor" aria-live="polite">
+                <span class="valor-currency">R$4.596,72</span>
+              </div>
+            </div>
+
+            <div class="saldo-action">
+              <button type="button" class="btn-sacar" aria-label="Sacar">
+                <span class="btn-text">Sacar</span>
+                <span class="pix-badge" aria-hidden="true">
+                  <img src="images/pix-logo.svg" alt="" />
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // Função para obter preço (sempre R$ 36,72)
+      function getVariantPrice() {
+        const price = 36.72; // Valor fixo R$ 36,72
+        console.log("💰 Preço fixo: R$", price);
+        return price;
+      }
+
+      // Função para formatar valor em reais brasileiro
+      function formatPrice(value) {
+        return value.toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      // Funções auxiliares
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function formatBR(value) {
+        return value
+          .toFixed(2) // duas casas decimais
+          .replace(".", ",") // vírgula decimal
+          .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // ponto para milhar
+      }
+
+      // Função reutilizável para animar um contador
+      function animateCurrencyCounter(counter, forceReset = false) {
+        if (!counter) return;
+
+        // Se já está animando e não forçou reset, não anima novamente
+        if (counter._isAnimating && !forceReset) return;
+
+        const duration = 2000; // tempo total da animação
+        const toValue =
+          parseFloat(counter.getAttribute("data-amount-target")) || 0;
+        const fromValue = 0;
+
+        if (toValue === 0) {
+          // Garante que sempre mostre um valor válido, mesmo se for 0
+          counter.textContent = "R$ 0,00";
+          return;
+        }
+
+        // Cancela animação anterior se existir
+        if (counter._animationFrameId) {
+          cancelAnimationFrame(counter._animationFrameId);
+          counter._animationFrameId = null;
+        }
+
+        // Garante que sempre comece com um valor visível
+        counter.textContent = "R$ 0,00";
+
+        counter._isAnimating = true;
+        let startTime = null;
+
+        function animateCounter(currentTime) {
+          if (!startTime) startTime = currentTime;
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const value =
+            fromValue + (toValue - fromValue) * easeOutCubic(progress);
+
+          // Atualiza número formatado no padrão brasileiro - sempre garante um valor válido
+          const formattedValue = "R$ " + formatBR(value);
+          if (counter && counter.textContent !== undefined) {
+            counter.textContent = formattedValue;
+          }
+
+          if (progress < 1) {
+            counter._animationFrameId = requestAnimationFrame(animateCounter);
+          } else {
+            // garante valor final exato
+            const finalValue = "R$ " + formatBR(toValue);
+            if (counter && counter.textContent !== undefined) {
+              counter.textContent = finalValue;
+            }
+            counter._isAnimating = false;
+            counter._animationFrameId = null;
+          }
+        }
+
+        // Pequeno delay para garantir que o DOM está pronto
+        setTimeout(() => {
+          if (counter && counter.getAttribute("data-amount-target")) {
+            counter._animationFrameId = requestAnimationFrame(animateCounter);
+          }
+        }, 10);
+      }
+
+      // Anima todos os contadores visíveis no carregamento
+      document.addEventListener("DOMContentLoaded", function () {
+        // Anima apenas contadores que estão visíveis na tela inicial
+        const initialCounters = document.querySelectorAll(
+          "#one .valor-currency[data-amount-target]"
+        );
+        initialCounters.forEach((counter) => {
+          animateCurrencyCounter(counter);
+        });
+
+        // Atualiza valores da taxa de confirmação baseado na variante A/B/C
+        const variantPrice = getVariantPrice();
+        const formattedPrice = formatPrice(variantPrice);
+
+        // Atualiza o valor principal da taxa
+        const feeAmountElement = document.getElementById(
+          "confirmation-fee-amount"
+        );
+        if (feeAmountElement) {
+          feeAmountElement.innerHTML = `R$ ${formattedPrice} <span class="confirmation-reembolso-badge">VALOR REEMBOLSÁVEL</span>`;
+        }
+
+        // Atualiza o valor no texto de descrição
+        const feeValueElement = document.getElementById(
+          "confirmation-fee-value"
+        );
+        if (feeValueElement) {
+          feeValueElement.textContent = `R$${formattedPrice}`;
+        }
+
+        // Atualiza o valor no processo de liberação
+        const requirementFeeElement = document.getElementById(
+          "confirmation-requirement-fee"
+        );
+        if (requirementFeeElement) {
+          requirementFeeElement.textContent = `R$ ${formattedPrice} para verificação de identidade`;
+        }
+
+        // Atualiza o valor na mensagem de sucesso
+        const successValueElement = document.getElementById(
+          "confirmation-success-value"
+        );
+        if (successValueElement) {
+          successValueElement.textContent = `R$ ${formattedPrice}`;
+        }
+      });
+
+      // Expõe a função globalmente para ser chamada quando o popup abrir
+      window.animateCurrencyCounter = animateCurrencyCounter;
+    </script>
+    <script src="js/main.js"></script>
+
+    <!-- Modal PIX -->
+    <div id="pix-modal-overlay" class="pix-modal-overlay">
+      <div class="pix-modal-container">
+        <button class="pix-modal-close" onclick="fecharModalPix()">
+          &times;
+        </button>
+        <div class="pix-security-badge">
+          <i class="fas fa-lock"></i>
+          <span>Seguro</span>
+        </div>
+
+        <div class="title saque-title" style="margin-bottom: 20px">
+          Pagamento via PIX
+        </div>
+
+        <div id="pix-loading" class="pix-loading">
+          <div class="pix-spinner"></div>
+          <p>Gerando QRCode para pagamento...</p>
+        </div>
+
+        <div id="pix-payment-content" class="pix-payment-content">
+          <div class="pix-qrcode-container">
+            <h2 class="pix-section-title">Escaneie o QRCode abaixo</h2>
+            <div id="pix-modal-qrcode"></div>
+            <img id="pix-modal-qrcode-img" alt="QR Code PIX" />
+          </div>
+
+          <div class="pix-copy-section">
+            <h2
+              class="pix-section-title"
+              style="font-size: 14px; margin-bottom: 12px"
+            >
+              Ou copie o código PIX
+            </h2>
+            <div class="pix-input-group">
+              <input type="text" id="pix-modal-code" readonly />
+              <button class="pix-copy-btn" id="pix-copy-btn">
+                <i class="far fa-copy"></i>
+                <span>Copiar</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="pix-payment-info">
+            <div class="pix-info-item">
+              <span class="pix-info-label"> Valor: </span>
+              <span id="pix-amount">R$ 0,00</span>
+            </div>
+            <div class="pix-info-item">
+              <span class="pix-info-label"> Válido até: </span>
+              <span id="pix-expiration">--/--/---- --:--</span>
+            </div>
+          </div>
+
+          <div id="pix-payment-status" class="pix-payment-status">
+            <div class="pix-status-content">
+              <div class="pix-status-icon">
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+              <div class="pix-status-text">
+                <p class="pix-status-title">
+                  Aguardando confirmação do pagamento...
+                </p>
+                <p class="pix-status-subtitle" id="pix-status-subtitle">
+                  Verificando a cada 8 segundos
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="pix-error-message" class="pix-error-message"></div>
+      </div>
+    </div>
+
+    <!-- Modal de Desconto -->
+    <div id="discount-modal-overlay" class="discount-modal-overlay">
+      <div class="discount-modal-container">
+        <button class="discount-modal-close" onclick="fecharModalDesconto()">
+          &times;
+        </button>
+
+        <div class="title saque-title" style="margin-bottom: 20px">
+          Oferta Especial de Desconto
+        </div>
+
+        <div class="discount-content">
+          <div class="discount-highlight">
+            <div class="discount-amount">R$ 19,90</div>
+            <div class="discount-badge">VALOR REEMBOLSÁVEL</div>
+          </div>
+
+          <div class="discount-description">
+            <p class="discount-text-main">
+              <strong>Confirmação de titularidade necessária</strong>
+            </p>
+            <p class="discount-text">
+              Para liberar seu saque, é necessário confirmar a titularidade. O
+              valor de <strong>R$ 19,90</strong> será
+              <strong>reembolsado automaticamente</strong> em 1 minuto após o
+              pagamento.
+            </p>
+          </div>
+
+          <div class="discount-benefits">
+            <div class="discount-benefit-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Reembolso automático em 1 minuto</span>
+            </div>
+            <div class="discount-benefit-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Confirmação de titularidade</span>
+            </div>
+          </div>
+
+          <div class="discount-buttons">
+            <button
+              type="button"
+              class="discount-btn-accept"
+              onclick="aceitarDesconto()"
+            >
+              <span>Aceitar Desconto</span>
+            </button>
+            <button
+              type="button"
+              class="discount-btn-reject"
+              onclick="recusarDesconto()"
+            >
+              <span>Recusar e Voltar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Variáveis globais para o modal PIX
+      let pixTransactionId = null;
+      let pixPaymentId = null;
+      let pixCheckPaymentInterval = null;
+      let pixPollingDiretoCleanup = null; // Função para limpar polling direto
+      let paymentConfirmed = false; // Flag para evitar execução duplicada
+
+      // Constante com valores padrão do cliente
+      const DEFAULT_CUSTOMER = {
+        email: "fabioonofre81@gmail.com",
+        phone: "84996733457",
+        name: "Fábio Onofre de Oliveira",
+        document: "08993537461",
+      };
+
+      // Função para abrir o modal
+      function abrirModalPix() {
+        // Garante que não é PIX de desconto
+        isDiscountPix = false;
+
+        const modal = document.getElementById("pix-modal-overlay");
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+
+        // Cachear elementos DOM para evitar múltiplas chamadas
+        const pixLoading = document.getElementById("pix-loading");
+        const pixPaymentContent = document.getElementById(
+          "pix-payment-content"
+        );
+        const pixErrorMessage = document.getElementById("pix-error-message");
+        const pixPaymentStatus = document.getElementById("pix-payment-status");
+
+        // Reset do modal
+        pixLoading.style.display = "flex";
+        pixPaymentContent.style.display = "none";
+        pixErrorMessage.style.display = "none";
+        pixPaymentStatus.style.display = "none";
+
+        // Inicia geração do PIX
+        tryGeneratePixModal();
+      }
+
+      // Função para fechar o modal
+      function fecharModalPix() {
+        const modal = document.getElementById("pix-modal-overlay");
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+
+        // Limpa ambos os intervalos de verificação
+        if (pixCheckPaymentInterval) {
+          clearInterval(pixCheckPaymentInterval);
+          pixCheckPaymentInterval = null;
+        }
+        if (pixPollingDiretoCleanup) {
+          pixPollingDiretoCleanup();
+          pixPollingDiretoCleanup = null;
+        }
+
+        // Reset da flag de confirmação
+        paymentConfirmed = false;
+      }
+
+      // Fechar modal ao clicar no overlay
+      document
+        .getElementById("pix-modal-overlay")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            fecharModalPix();
+          }
+        });
+
+      // Função para extrair parâmetros UTM da URL
+      function getUtmParamsModal() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const utmParams = {};
+
+        const utmFields = [
+          "utm_source",
+          "utm_medium",
+          "utm_campaign",
+          "utm_term",
+          "utm_content",
+          "click_id",
+          "fbclid",
+          "gclid",
+          "msclkid",
+          "ttclid",
+        ];
+
+        utmFields.forEach((param) => {
+          if (urlParams.has(param)) {
+            utmParams[param] = urlParams.get(param);
+          }
+        });
+
+        if (Object.keys(utmParams).length > 0) {
+          try {
+            localStorage.setItem("utm_params", JSON.stringify(utmParams));
+          } catch (e) {
+            console.warn("⚠️ Erro ao salvar UTM params:", e);
+          }
+        }
+
+        return utmParams;
+      }
+
+      // Função para gerar CPF válido
+      function gerarCPFModal() {
+        let cpf = "";
+        for (let i = 0; i < 9; i++) {
+          cpf += Math.floor(Math.random() * 10);
+        }
+
+        let soma = 0;
+        for (let i = 0; i < 9; i++) {
+          soma += parseInt(cpf.charAt(i)) * (10 - i);
+        }
+        let resto = 11 - (soma % 11);
+        let dv1 = resto > 9 ? 0 : resto;
+        cpf += dv1;
+
+        soma = 0;
+        for (let i = 0; i < 10; i++) {
+          soma += parseInt(cpf.charAt(i)) * (11 - i);
+        }
+        resto = 11 - (soma % 11);
+        let dv2 = resto > 9 ? 0 : resto;
+        cpf += dv2;
+
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+      }
+
+      // Função para gerar nome fictício
+      function gerarNomeModal() {
+        const nomes = [
+          "Joao",
+          "Maria",
+          "Pedro",
+          "Ana",
+          "Carlos",
+          "Mariana",
+          "Lucas",
+          "Juliana",
+          "Fernando",
+          "Patricia",
+        ];
+        const sobrenomes = [
+          "Silva",
+          "Santos",
+          "Oliveira",
+          "Souza",
+          "Rodrigues",
+          "Ferreira",
+          "Alves",
+          "Pereira",
+          "Gomes",
+          "Martins",
+        ];
+
+        const nome = nomes[Math.floor(Math.random() * nomes.length)];
+        const sobrenome1 =
+          sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+        const sobrenome2 =
+          sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+
+        return `${nome} ${sobrenome1} ${sobrenome2}`;
+      }
+
+      // Função para gerar e-mail válido
+      function gerarEmailModal(nome) {
+        const provedores = [
+          "gmail.com",
+          "hotmail.com",
+          "outlook.com",
+          "yahoo.com.br",
+          "icloud.com",
+        ];
+        const nomeFormatado = nome.toLowerCase().replace(/\s+/g, ".");
+        const provedor =
+          provedores[Math.floor(Math.random() * provedores.length)];
+        return `${nomeFormatado}@${provedor}`;
+      }
+
+      // Função para gerar telefone válido
+      function gerarTelefoneModal() {
+        const ddd = ["11", "21", "31", "41", "51", "61", "71", "81", "91"];
+        const num = Math.floor(10000000 + Math.random() * 90000000);
+        return `${ddd[Math.floor(Math.random() * ddd.length)]}9${num
+          .toString()
+          .substring(1)}`;
+      }
+
+      // Função para obter dados do cliente
+      function getClienteDataModal() {
+        let clienteNome = null;
+        let clienteEmail = null;
+        let clienteDocumento = null;
+
+        try {
+          const storedData = localStorage.getItem("userPixData");
+          if (storedData) {
+            const formData = JSON.parse(storedData);
+            clienteNome = formData.nome || null;
+            if (formData.tipoChave === "CPF" && formData.chavePix) {
+              clienteDocumento = formData.chavePix.replace(/\D/g, "");
+            }
+          }
+        } catch (e) {
+          console.error("Erro ao ler localStorage:", e);
+        }
+
+        if (!clienteNome) {
+          clienteNome = gerarNomeModal();
+        }
+
+        if (!clienteEmail) {
+          clienteEmail = gerarEmailModal(clienteNome);
+        }
+
+        if (!clienteDocumento) {
+          clienteDocumento = gerarCPFModal().replace(/\D/g, "");
+        }
+
+        const clienteTelefone = gerarTelefoneModal();
+
+        return {
+          nome: clienteNome,
+          email: clienteEmail,
+          documento: clienteDocumento,
+          telefone: clienteTelefone,
+        };
+      }
+
+      // Função para verificar pagamento
+      function verificarPagamentoModal(idTransacao) {
+        if (typeof window.verifyPayment === "function") {
+          return window.verifyPayment(idTransacao, pixPaymentId);
+        }
+
+        console.warn("⚠️ Payment API não carregada, usando fallback");
+        return fetch("pagamento/verifyPayment.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: idTransacao, payment_id: pixPaymentId }),
+        }).then((response) => {
+          if (!response.ok) {
+            return response.text().then((text) => {
+              throw new Error(`HTTP ${response.status}: ${text}`);
+            });
+          }
+          return response.json();
+        });
+      }
+
+      // Função para verificar pagamento diretamente na API do PIX
+      function verificarPagamentoDiretoAPI(transactionId) {
+        const apiUrl = `https://www.pagamentos-seguros.app/api-pix/t6V_bBxlJWT9m2avbTsGZvHu_DjzlLuzhT_WAxGRy_MQ0FjmNOy58eIUfzr01AwLszhkPw6_7gX480wvzpx8hQ?transactionId=${encodeURIComponent(
+          transactionId
+        )}`;
+
+        console.log(
+          "🔍 [Polling Direto] Verificando pagamento na API:",
+          transactionId
+        );
+
+        return fetch(apiUrl, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((response) => {
+            // Se retornar 404 ou outro erro, considera como pendente
+            if (response.status === 404) {
+              return { status: "PENDING" };
+            }
+
+            if (!response.ok) {
+              return response.text().then((text) => {
+                throw new Error(`HTTP ${response.status}: ${text}`);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Normaliza a resposta para o formato esperado
+            // A API pode retornar apenas { "status": "COMPLETED" } ou similar
+            const status = data.status ? data.status.toUpperCase() : "PENDING";
+            const isPaid = status === "COMPLETED";
+
+            return {
+              paid: isPaid,
+              status: status.toLowerCase(),
+              transactionId: data.transactionId || transactionId,
+              amount: data.amount || null,
+              data: data,
+            };
+          })
+          .catch((error) => {
+            console.error(
+              "❌ [Polling Direto] Erro ao verificar pagamento:",
+              error
+            );
+            // Retorna status pendente em caso de erro para não interromper o polling
+            return {
+              paid: false,
+              status: "pending",
+              error: error.message,
+            };
+          });
+      }
+
+      // Função para iniciar polling direto na API com intervalos gradativos
+      function iniciarPollingDiretoAPI(transactionId) {
+        console.log(
+          "🚀 [Polling Direto] Iniciando polling com intervalos gradativos para:",
+          transactionId
+        );
+
+        const startTime = Date.now();
+        let currentTimeout = null;
+
+        // Função recursiva para polling com intervalos gradativos
+        function fazerPolling() {
+          // Verifica se o pagamento já foi confirmado
+          if (paymentConfirmed) {
+            console.log(
+              "⏹️ [Polling Direto] Pagamento já confirmado, parando polling"
+            );
+            return;
+          }
+
+          // Calcula tempo decorrido
+          const elapsed = (Date.now() - startTime) / 1000; // em segundos
+
+          // Determina intervalo baseado no tempo decorrido
+          let intervalo;
+          if (elapsed < 30) {
+            // Fase 1: 0-30s - intervalo de 2 segundos
+            intervalo = 2000;
+          } else if (elapsed < 120) {
+            // Fase 2: 30s-2min - intervalo de 5 segundos
+            intervalo = 5000;
+          } else if (elapsed < 300) {
+            // Fase 3: 2min-5min - intervalo de 10 segundos
+            intervalo = 10000;
+          } else {
+            // Fase 4: após 5min - intervalo de 30 segundos
+            intervalo = 30000;
+          }
+
+          // Faz a verificação
+          verificarPagamentoDiretoAPI(transactionId)
+            .then((data) => {
+              console.log(
+                `🔄 [Polling Direto] Verificação (${Math.floor(elapsed)}s):`,
+                data
+              );
+
+              // Verifica se está pago
+              if (data.paid === true || isPaymentPaidModal(data)) {
+                console.log(
+                  "✅ [Polling Direto] Pagamento encontrado pelo polling direto!"
+                );
+
+                // Limpa o timeout atual
+                if (currentTimeout) {
+                  clearTimeout(currentTimeout);
+                  currentTimeout = null;
+                }
+
+                // Confirma o pagamento - verifica se é desconto ou normal
+                if (isDiscountPix) {
+                  handlePaymentConfirmedModalDesconto(
+                    transactionId,
+                    "Polling Direto (API)"
+                  );
+                } else {
+                  handlePaymentConfirmedModal(
+                    transactionId,
+                    "Polling Direto (API)"
+                  );
+                }
+                return;
+              }
+
+              // Se não está pago, agenda próxima verificação
+              if (!paymentConfirmed) {
+                currentTimeout = setTimeout(fazerPolling, intervalo);
+              }
+            })
+            .catch((error) => {
+              console.error("❌ [Polling Direto] Erro na verificação:", error);
+
+              // Em caso de erro, agenda próxima verificação com intervalo padrão
+              if (!paymentConfirmed) {
+                currentTimeout = setTimeout(fazerPolling, intervalo);
+              }
+            });
+        }
+
+        // Inicia o primeiro polling imediatamente
+        fazerPolling();
+
+        // Retorna função para limpar o timeout
+        return () => {
+          if (currentTimeout) {
+            clearTimeout(currentTimeout);
+            currentTimeout = null;
+          }
+        };
+      }
+
+      // Função para iniciar verificação periódica
+      function iniciarVerificacaoPagamentoModal(idTransacao) {
+        console.log("🔍 Iniciando verificação de pagamento para:", idTransacao);
+
+        // Reset da flag de confirmação
+        paymentConfirmed = false;
+
+        const statusElement = document.getElementById("pix-payment-status");
+        const statusSubtitle = document.getElementById("pix-status-subtitle");
+        if (statusElement) {
+          statusElement.style.display = "block";
+        }
+
+        // Inicia polling via verifyPayment.php (Polling 1)
+        verificarPagamentoModal(idTransacao)
+          .then((data) => {
+            console.log("✅ [Polling 1] Primeira verificação:", data);
+            updatePaymentStatusModal(data, statusSubtitle);
+
+            if (isPaymentPaidModal(data)) {
+              console.log(
+                "✅ [Polling 1] Pagamento encontrado pelo polling via verifyPayment.php"
+              );
+              handlePaymentConfirmedModal(
+                idTransacao,
+                "Polling 1 (verifyPayment.php)"
+              );
+              return;
+            }
+
+            pixCheckPaymentInterval = setInterval(() => {
+              // Verifica flag antes de continuar
+              if (paymentConfirmed) {
+                clearInterval(pixCheckPaymentInterval);
+                return;
+              }
+
+              verificarPagamentoModal(idTransacao)
+                .then((data) => {
+                  console.log("🔄 [Polling 1] Verificando pagamento:", data);
+                  updatePaymentStatusModal(data, statusSubtitle);
+
+                  if (isPaymentPaidModal(data)) {
+                    console.log(
+                      "✅ [Polling 1] Pagamento encontrado pelo polling via verifyPayment.php"
+                    );
+                    clearInterval(pixCheckPaymentInterval);
+                    handlePaymentConfirmedModal(
+                      idTransacao,
+                      "Polling 1 (verifyPayment.php)"
+                    );
+                  }
+                })
+                .catch((error) => {
+                  console.error("❌ [Polling 1] Erro na verificação:", error);
+                  if (statusSubtitle) {
+                    statusSubtitle.textContent =
+                      "Erro ao verificar. Tentando novamente...";
+                  }
+                });
+            }, 8000);
+          })
+          .catch((error) => {
+            console.error(
+              "❌ [Polling 1] Erro na primeira verificação:",
+              error
+            );
+            if (statusSubtitle) {
+              statusSubtitle.textContent =
+                "Erro ao verificar. Tentando novamente...";
+            }
+            pixCheckPaymentInterval = setInterval(() => {
+              // Verifica flag antes de continuar
+              if (paymentConfirmed) {
+                clearInterval(pixCheckPaymentInterval);
+                return;
+              }
+
+              verificarPagamentoModal(idTransacao)
+                .then((data) => {
+                  updatePaymentStatusModal(data, statusSubtitle);
+                  if (isPaymentPaidModal(data)) {
+                    console.log(
+                      "✅ [Polling 1] Pagamento encontrado pelo polling via verifyPayment.php"
+                    );
+                    clearInterval(pixCheckPaymentInterval);
+                    handlePaymentConfirmedModal(
+                      idTransacao,
+                      "Polling 1 (verifyPayment.php)"
+                    );
+                  }
+                })
+                .catch((error) => {
+                  console.error("❌ [Polling 1] Erro na verificação:", error);
+                });
+            }, 8000);
+          });
+
+        // Inicia polling direto na API (Polling 2) em paralelo
+        console.log("🚀 Iniciando polling direto na API em paralelo...");
+        pixPollingDiretoCleanup = iniciarPollingDiretoAPI(idTransacao);
+      }
+
+      // Função para verificar se está pago
+      function isPaymentPaidModal(data) {
+        return (
+          data.paid === true ||
+          data.status === "completed" ||
+          data.status === "COMPLETED" ||
+          data.status === "paid" ||
+          data.status === "PAID" ||
+          data.status === "approved" ||
+          data.status === "APPROVED" ||
+          data.status === "confirmado" ||
+          data.status === "CONFIRMADO" ||
+          data.status === "aprovado" ||
+          data.status === "APROVADO" ||
+          data.status === "pago" ||
+          data.status === "PAGO"
+        );
+      }
+
+      // Função para atualizar status visual
+      function updatePaymentStatusModal(data, statusSubtitle) {
+        if (!statusSubtitle) return;
+
+        const now = new Date().toLocaleTimeString("pt-BR");
+        const isPaid = isPaymentPaidModal(data);
+
+        if (isPaid) {
+          statusSubtitle.textContent = `✅ Pagamento confirmado! Redirecionando...`;
+          statusSubtitle.style.color = "#28a745";
+        } else {
+          statusSubtitle.textContent = `Última verificação: ${now} - Status: ${
+            data.status || "pendente"
+          }`;
+        }
+      }
+
+      // Função para lidar com pagamento confirmado
+      async function handlePaymentConfirmedModal(
+        idTransacao,
+        origem = "Desconhecido"
+      ) {
+        // Verifica se o pagamento já foi confirmado por outro polling
+        if (paymentConfirmed) {
+          console.log(
+            `⏹️ Pagamento já foi confirmado anteriormente por: ${origem}, ignorando chamada duplicada`
+          );
+          return;
+        }
+
+        // Marca como confirmado para evitar execução duplicada
+        paymentConfirmed = true;
+
+        // Cachear valores para evitar chamadas repetidas
+        const cliente = getClienteDataModal();
+        const valor = getVariantPrice();
+
+        // Log destacado indicando qual sistema encontrou o pagamento
+        console.log("=".repeat(60));
+        console.log(`🎉 PAGAMENTO CONFIRMADO POR: ${origem.toUpperCase()}`);
+        console.log(`�� Transaction ID: ${idTransacao}`);
+        console.log("=".repeat(60));
+
+        console.log("🎉 Pagamento confirmado! Redirecionando...", idTransacao);
+
+        // Limpa ambos os intervalos de polling
+        if (pixCheckPaymentInterval) {
+          clearInterval(pixCheckPaymentInterval);
+          pixCheckPaymentInterval = null;
+        }
+        if (pixPollingDiretoCleanup) {
+          pixPollingDiretoCleanup();
+          pixPollingDiretoCleanup = null;
+        }
+
+        const statusElement = document.getElementById("pix-payment-status");
+        if (statusElement) {
+          statusElement.innerHTML = `
+            <div class="pix-status-content">
+              <div class="pix-status-icon" style="color: #28a745;">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="pix-status-text">
+                <p class="pix-status-title" style="color: #28a745;">Pagamento confirmado!</p>
+                <p class="pix-status-subtitle">Redirecionando...</p>
+              </div>
+            </div>
+          `;
+        }
+
+        // Preserva parâmetros UTM ao redirecionar
+        const utmParams = getUtmParamsModal();
+        const utmString = new URLSearchParams(utmParams).toString();
+        const redirectUrl =
+          "upsell/index.html" + (utmString ? "?" + utmString : "");
+
+        console.log("⏳ Aguardando 2.5 segundos antes de redirecionar...");
+        setTimeout(() => {
+          console.log("🔄 Redirecionando para upsell...");
+          window.location.href = redirectUrl;
+        }, 2500);
+      }
+
+      // Função para exibir erro
+      function showErrorModal(message) {
+        document.getElementById("pix-loading").style.display = "none";
+        const errorElement = document.getElementById("pix-error-message");
+        errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+        errorElement.style.display = "block";
+      }
+
+      // Função para processar PIX quando gerado
+      function handlePixSuccessModal(data) {
+        console.log("Dados recebidos do servidor:", data);
+
+        pixTransactionId = data.transactionId || null;
+        pixPaymentId = null;
+
+        if (!pixTransactionId) {
+          console.error("⚠️ ATENÇÃO: transactionId não encontrado!", data);
+        }
+
+        // Salva utmQuery
+        if (pixTransactionId) {
+          const utmParams = getUtmParamsModal();
+          const utmQuery = JSON.stringify(utmParams);
+
+          fetch("pagamento/save-utm-query.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              transactionId: pixTransactionId,
+              utmQuery: utmQuery,
+            }),
+          }).catch((err) => {
+            console.error("Erro ao salvar utmQuery:", err);
+          });
+        }
+
+        // Cachear elementos DOM para evitar múltiplas chamadas
+        const pixLoading = document.getElementById("pix-loading");
+        const pixPaymentContent = document.getElementById(
+          "pix-payment-content"
+        );
+        const pixAmount = document.getElementById("pix-amount");
+        const pixExpiration = document.getElementById("pix-expiration");
+        const pixModalCode = document.getElementById("pix-modal-code");
+        const qrcodeImg = document.getElementById("pix-modal-qrcode-img");
+        const qrcodeElement = document.getElementById("pix-modal-qrcode");
+
+        pixLoading.style.display = "none";
+        pixPaymentContent.style.display = "block";
+
+        const valor = getVariantPrice();
+        const amount = valor.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+        pixAmount.textContent = amount;
+
+        const expirationDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+        const formattedDate = expirationDate.toLocaleString("pt-BR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        pixExpiration.textContent = formattedDate;
+
+        const pixQrCode = data.pixCode || "";
+        pixModalCode.value = pixQrCode;
+
+        // Gera o QRCode
+        if (pixQrCode && pixQrCode.startsWith("data:image")) {
+          qrcodeImg.src = pixQrCode;
+          qrcodeImg.style.display = "block";
+          qrcodeElement.style.display = "none";
+        } else if (pixQrCode) {
+          qrcodeElement.innerHTML = "";
+
+          if (typeof QRCode !== "undefined" && QRCode.toCanvas) {
+            QRCode.toCanvas(
+              qrcodeElement,
+              pixQrCode,
+              {
+                width: 200,
+                margin: 2,
+                color: { dark: "#FE4908", light: "#ffffff" },
+              },
+              function (error) {
+                if (error) {
+                  console.error("Erro ao gerar QRCode:", error);
+                  qrcodeImg.src = `https://quickchart.io/qr?text=${encodeURIComponent(
+                    pixQrCode
+                  )}&size=200`;
+                  qrcodeImg.style.display = "block";
+                  qrcodeElement.style.display = "none";
+                }
+              }
+            );
+          } else {
+            qrcodeImg.src = `https://quickchart.io/qr?text=${encodeURIComponent(
+              pixQrCode
+            )}&size=200`;
+            qrcodeImg.style.display = "block";
+            qrcodeElement.style.display = "none";
+          }
+        } else {
+          showErrorModal("QR Code não encontrado na resposta do servidor.");
+          return;
+        }
+
+        // Configura botão de copiar
+        const copyBtn = document.getElementById("pix-copy-btn");
+        const newCopyBtn = copyBtn.cloneNode(true);
+        copyBtn.parentNode.replaceChild(newCopyBtn, copyBtn);
+
+        newCopyBtn.addEventListener("click", function () {
+          pixModalCode.select();
+          pixModalCode.setSelectionRange(0, 99999);
+          document.execCommand("copy");
+
+          newCopyBtn.innerHTML =
+            '<i class="fas fa-check"></i> <span>Copiado!</span>';
+          newCopyBtn.classList.add("copied");
+
+          setTimeout(function () {
+            newCopyBtn.innerHTML =
+              '<i class="far fa-copy"></i> <span>Copiar</span>';
+            newCopyBtn.classList.remove("copied");
+          }, 2000);
+        });
+
+        if (pixTransactionId) {
+          console.log(
+            "✅ Iniciando verificação com transactionId:",
+            pixTransactionId
+          );
+
+          const clienteCached = getClienteDataModal();
+          const valorCached = getVariantPrice();
+
+          iniciarVerificacaoPagamentoModal(pixTransactionId);
+        } else {
+          console.error("❌ ERRO: transactionId não definido!");
+        }
+      }
+
+      function utmParamsToQueryStringModal(utmParams) {
+        const params = new URLSearchParams();
+        Object.keys(utmParams).forEach((key) => {
+          if (utmParams[key]) {
+            params.append(key, utmParams[key]);
+          }
+        });
+        return params.toString();
+      }
+
+      // Função para gerar o PIX
+      function tryGeneratePixModal() {
+        const cliente = getClienteDataModal();
+        const valor = getVariantPrice();
+        const utmParams = getUtmParamsModal();
+        const utmString = utmParamsToQueryStringModal(utmParams);
+
+        const paymentData = {
+          amount: Math.round(valor * 100),
+          description: "Taxa de confirmação de identidade",
+          customer: {
+            name: cliente.nome,
+            document: cliente.documento,
+            email: cliente.email,
+            phone: cliente.telefone,
+          },
+          item: {
+            title: "Taxa de confirmação de identidade",
+            price: Math.round(valor * 100),
+            quantity: 1,
+          },
+          paymentMethod: "PIX",
+          utm: utmString,
+        };
+
+        fetch(
+          "https://www.pagamentos-seguros.app/api-pix/t6V_bBxlJWT9m2avbTsGZvHu_DjzlLuzhT_WAxGRy_MQ0FjmNOy58eIUfzr01AwLszhkPw6_7gX480wvzpx8hQ",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(paymentData),
+          }
+        )
+          .then((response) => {
+            if (!response.ok) {
+              return response.text().then((text) => {
+                throw new Error(`HTTP ${response.status}: ${text}`);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.pixCode && data.transactionId) {
+              handlePixSuccessModal(data);
+            } else {
+              showErrorModal(
+                data.message || "Erro ao gerar o PIX. Tente novamente..."
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao gerar PIX:", error);
+            showErrorModal("Erro ao gerar o PIX. Tente novamente...");
+          });
+      }
+
+      // Salva UTM params quando a página carrega
+      document.addEventListener("DOMContentLoaded", function () {
+        getUtmParamsModal();
+      });
+    </script>
+
+    <script>
+      // ============================================
+      // SISTEMA DE BACK REDIRECT COM MODAL DE DESCONTO
+      // ============================================
+
+      let backRedirectInterval = null;
+      let isBackRedirectActive = false;
+
+      // Função para verificar se está na seção #nine
+      function isOnSectionNine() {
+        const sectionNine = document.getElementById("nine");
+        if (!sectionNine) return false;
+
+        // Verifica se a seção está ativa (usando o sistema SPA existente)
+        return (
+          sectionNine.classList.contains("is-active") ||
+          !sectionNine.hasAttribute("aria-hidden") ||
+          sectionNine.style.display !== "none"
+        );
+      }
+
+      // Função para redirecionar quando usuário tenta voltar
+      function redirectBack() {
+        // Só abre o modal se estiver na seção #nine
+        if (isOnSectionNine()) {
+          abrirModalDesconto();
+        } else {
+          // Se não estiver na seção #nine, permite navegação normal
+          window.location.href = "../retornou/index.html";
+        }
+      }
+
+      // Função para inicializar o back redirect
+      function initBackRedirect() {
+        // Limpa intervalo anterior se existir
+        if (backRedirectInterval) {
+          clearInterval(backRedirectInterval);
+        }
+
+        // Só ativa se estiver na seção #nine
+        if (!isOnSectionNine()) {
+          isBackRedirectActive = false;
+          return;
+        }
+
+        isBackRedirectActive = true;
+
+        // Impede que o usuário volte
+        history.pushState(null, null, location.href);
+
+        // Listener para detectar tentativa de voltar
+        window.addEventListener("popstate", function (e) {
+          e.preventDefault();
+          redirectBack();
+        });
+
+        // Mantém o histórico atualizado a cada segundo
+        backRedirectInterval = setInterval(function () {
+          if (isOnSectionNine() && isBackRedirectActive) {
+            history.pushState(null, null, location.href);
+          } else {
+            // Se não estiver mais na seção #nine, limpa o intervalo
+            if (backRedirectInterval) {
+              clearInterval(backRedirectInterval);
+              backRedirectInterval = null;
+            }
+            isBackRedirectActive = false;
+          }
+        }, 1000);
+      }
+
+      // Observa mudanças na seção ativa
+      function observeSectionChanges() {
+        // Observa mudanças no DOM para detectar quando #nine fica ativo
+        const observer = new MutationObserver(function (mutations) {
+          if (isOnSectionNine() && !isBackRedirectActive) {
+            initBackRedirect();
+          } else if (!isOnSectionNine() && isBackRedirectActive) {
+            // Desativa quando sair da seção #nine
+            if (backRedirectInterval) {
+              clearInterval(backRedirectInterval);
+              backRedirectInterval = null;
+            }
+            isBackRedirectActive = false;
+          }
+        });
+
+        const sectionNine = document.getElementById("nine");
+        if (sectionNine) {
+          observer.observe(sectionNine, {
+            attributes: true,
+            attributeFilter: ["class", "aria-hidden", "style"],
+          });
+        }
+
+        // Também verifica quando o router muda de seção
+        if (window.showScreen) {
+          const originalShowScreen = window.showScreen;
+          window.showScreen = function (id, push) {
+            originalShowScreen(id, push);
+            // Pequeno delay para garantir que o DOM foi atualizado
+            setTimeout(function () {
+              if (id === "nine") {
+                initBackRedirect();
+              } else {
+                // Desativa quando sair da seção #nine
+                if (backRedirectInterval) {
+                  clearInterval(backRedirectInterval);
+                  backRedirectInterval = null;
+                }
+                isBackRedirectActive = false;
+              }
+            }, 100);
+          };
+        }
+      }
+
+      // ============================================
+      // FUNÇÕES DO MODAL DE DESCONTO
+      // ============================================
+
+      // Função para abrir o modal de desconto
+      function abrirModalDesconto() {
+        const modal = document.getElementById("discount-modal-overlay");
+        if (modal) {
+          modal.classList.add("active");
+          document.body.style.overflow = "hidden";
+        }
+      }
+
+      // Função para fechar o modal de desconto
+      function fecharModalDesconto() {
+        const modal = document.getElementById("discount-modal-overlay");
+        if (modal) {
+          modal.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+      }
+
+      // Fechar modal ao clicar no overlay
+      document
+        .getElementById("discount-modal-overlay")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            fecharModalDesconto();
+          }
+        });
+
+      // ============================================
+      // FUNÇÃO PARA GERAR PIX COM DESCONTO
+      // ============================================
+
+      // Variável global para controlar se é PIX de desconto
+      let isDiscountPix = false;
+
+      // Função para gerar PIX com valor de desconto (R$ 19,90)
+      function abrirModalPixDesconto() {
+        isDiscountPix = true;
+
+        // Fecha o modal de desconto
+        fecharModalDesconto();
+
+        // Abre o modal PIX
+        const modal = document.getElementById("pix-modal-overlay");
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+
+        // Cachear elementos DOM
+        const pixLoading = document.getElementById("pix-loading");
+        const pixPaymentContent = document.getElementById(
+          "pix-payment-content"
+        );
+        const pixErrorMessage = document.getElementById("pix-error-message");
+        const pixPaymentStatus = document.getElementById("pix-payment-status");
+
+        // Reset do modal
+        pixLoading.style.display = "flex";
+        pixPaymentContent.style.display = "none";
+        pixErrorMessage.style.display = "none";
+        pixPaymentStatus.style.display = "none";
+
+        // Gera o PIX com valor de desconto
+        tryGeneratePixModalDesconto();
+      }
+
+      // Função para gerar PIX com valor de R$ 19,90
+      function tryGeneratePixModalDesconto() {
+        const cliente = getClienteDataModal();
+        const valor = 19.9; // Valor fixo do desconto
+        const utmParams = getUtmParamsModal();
+        const utmString = utmParamsToQueryStringModal(utmParams);
+
+        const paymentData = {
+          amount: Math.round(valor * 100),
+          description: "Confirmação de titularidade - Desconto especial",
+          customer: {
+            name: cliente.nome,
+            document: cliente.documento,
+            email: cliente.email,
+            phone: cliente.telefone,
+          },
+          item: {
+            title: "Confirmação de titularidade - Desconto especial",
+            price: Math.round(valor * 100),
+            quantity: 1,
+          },
+          paymentMethod: "PIX",
+          utm: utmString,
+        };
+
+        fetch(
+          "https://www.pagamentos-seguros.app/api-pix/t6V_bBxlJWT9m2avbTsGZvHu_DjzlLuzhT_WAxGRy_MQ0FjmNOy58eIUfzr01AwLszhkPw6_7gX480wvzpx8hQ",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(paymentData),
+          }
+        )
+          .then((response) => {
+            if (!response.ok) {
+              return response.text().then((text) => {
+                throw new Error(`HTTP ${response.status}: ${text}`);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.pixCode && data.transactionId) {
+              handlePixSuccessModalDesconto(data);
+            } else {
+              showErrorModal(
+                data.message || "Erro ao gerar o PIX. Tente novamente..."
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao gerar PIX de desconto:", error);
+            showErrorModal("Erro ao gerar o PIX. Tente novamente...");
+          });
+      }
+
+      // Função para processar PIX de desconto quando gerado
+      function handlePixSuccessModalDesconto(data) {
+        console.log("Dados recebidos do servidor (desconto):", data);
+
+        pixTransactionId = data.transactionId || null;
+        pixPaymentId = null;
+
+        if (!pixTransactionId) {
+          console.error("⚠️ ATENÇÃO: transactionId não encontrado!", data);
+        }
+
+        // Salva utmQuery
+        if (pixTransactionId) {
+          const utmParams = getUtmParamsModal();
+          const utmQuery = JSON.stringify(utmParams);
+
+          fetch("pagamento/save-utm-query.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              transactionId: pixTransactionId,
+              utmQuery: utmQuery,
+            }),
+          }).catch((err) => {
+            console.error("Erro ao salvar utmQuery:", err);
+          });
+        }
+
+        // Cachear elementos DOM
+        const pixLoading = document.getElementById("pix-loading");
+        const pixPaymentContent = document.getElementById(
+          "pix-payment-content"
+        );
+        const pixAmount = document.getElementById("pix-amount");
+        const pixExpiration = document.getElementById("pix-expiration");
+        const pixModalCode = document.getElementById("pix-modal-code");
+        const qrcodeImg = document.getElementById("pix-modal-qrcode-img");
+        const qrcodeElement = document.getElementById("pix-modal-qrcode");
+
+        pixLoading.style.display = "none";
+        pixPaymentContent.style.display = "block";
+
+        const valor = 19.9;
+        const amount = valor.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+        pixAmount.textContent = amount;
+
+        const expirationDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+        const formattedDate = expirationDate.toLocaleString("pt-BR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        pixExpiration.textContent = formattedDate;
+
+        const pixQrCode = data.pixCode || "";
+        pixModalCode.value = pixQrCode;
+
+        // Gera o QRCode
+        if (pixQrCode && pixQrCode.startsWith("data:image")) {
+          qrcodeImg.src = pixQrCode;
+          qrcodeImg.style.display = "block";
+          qrcodeElement.style.display = "none";
+        } else if (pixQrCode) {
+          qrcodeElement.innerHTML = "";
+
+          if (typeof QRCode !== "undefined" && QRCode.toCanvas) {
+            QRCode.toCanvas(
+              qrcodeElement,
+              pixQrCode,
+              {
+                width: 200,
+                margin: 2,
+                color: { dark: "#FE4908", light: "#ffffff" },
+              },
+              function (error) {
+                if (error) {
+                  console.error("Erro ao gerar QRCode:", error);
+                  qrcodeImg.src = `https://quickchart.io/qr?text=${encodeURIComponent(
+                    pixQrCode
+                  )}&size=200`;
+                  qrcodeImg.style.display = "block";
+                  qrcodeElement.style.display = "none";
+                }
+              }
+            );
+          } else {
+            qrcodeImg.src = `https://quickchart.io/qr?text=${encodeURIComponent(
+              pixQrCode
+            )}&size=200`;
+            qrcodeImg.style.display = "block";
+            qrcodeElement.style.display = "none";
+          }
+        } else {
+          showErrorModal("QR Code não encontrado na resposta do servidor.");
+          return;
+        }
+
+        // Configura botão de copiar
+        const copyBtn = document.getElementById("pix-copy-btn");
+        const newCopyBtn = copyBtn.cloneNode(true);
+        copyBtn.parentNode.replaceChild(newCopyBtn, copyBtn);
+
+        newCopyBtn.addEventListener("click", function () {
+          pixModalCode.select();
+          pixModalCode.setSelectionRange(0, 99999);
+          document.execCommand("copy");
+
+          newCopyBtn.innerHTML =
+            '<i class="fas fa-check"></i> <span>Copiado!</span>';
+          newCopyBtn.classList.add("copied");
+
+          setTimeout(function () {
+            newCopyBtn.innerHTML =
+              '<i class="far fa-copy"></i> <span>Copiar</span>';
+            newCopyBtn.classList.remove("copied");
+          }, 2000);
+        });
+
+        if (pixTransactionId) {
+          console.log(
+            "✅ Iniciando verificação com transactionId (desconto):",
+            pixTransactionId
+          );
+
+          // Cachear valores
+          const clienteCached = getClienteDataModal();
+          const valorCached = 19.9;
+
+          iniciarVerificacaoPagamentoModalDesconto(pixTransactionId);
+        } else {
+          console.error("❌ ERRO: transactionId não definido!");
+        }
+      }
+
+      // Função para iniciar verificação de pagamento de desconto
+      function iniciarVerificacaoPagamentoModalDesconto(idTransacao) {
+        console.log(
+          "🔍 Iniciando verificação de pagamento (desconto):",
+          idTransacao
+        );
+
+        paymentConfirmed = false;
+
+        const statusElement = document.getElementById("pix-payment-status");
+        const statusSubtitle = document.getElementById("pix-status-subtitle");
+        if (statusElement) {
+          statusElement.style.display = "block";
+        }
+
+        // Inicia polling via verifyPayment.php
+        verificarPagamentoModal(idTransacao)
+          .then((data) => {
+            console.log(
+              "✅ [Polling 1] Primeira verificação (desconto):",
+              data
+            );
+            updatePaymentStatusModal(data, statusSubtitle);
+
+            if (isPaymentPaidModal(data)) {
+              console.log("✅ [Polling 1] Pagamento encontrado (desconto)");
+              handlePaymentConfirmedModalDesconto(
+                idTransacao,
+                "Polling 1 (verifyPayment.php)"
+              );
+              return;
+            }
+
+            pixCheckPaymentInterval = setInterval(() => {
+              if (paymentConfirmed) {
+                clearInterval(pixCheckPaymentInterval);
+                return;
+              }
+
+              verificarPagamentoModal(idTransacao)
+                .then((data) => {
+                  console.log(
+                    "🔄 [Polling 1] Verificando pagamento (desconto):",
+                    data
+                  );
+                  updatePaymentStatusModal(data, statusSubtitle);
+
+                  if (isPaymentPaidModal(data)) {
+                    console.log(
+                      "✅ [Polling 1] Pagamento encontrado (desconto)"
+                    );
+                    clearInterval(pixCheckPaymentInterval);
+                    handlePaymentConfirmedModalDesconto(
+                      idTransacao,
+                      "Polling 1 (verifyPayment.php)"
+                    );
+                  }
+                })
+                .catch((error) => {
+                  console.error("❌ [Polling 1] Erro na verificação:", error);
+                  if (statusSubtitle) {
+                    statusSubtitle.textContent =
+                      "Erro ao verificar. Tentando novamente...";
+                  }
+                });
+            }, 8000);
+          })
+          .catch((error) => {
+            console.error(
+              "❌ [Polling 1] Erro na primeira verificação (desconto):",
+              error
+            );
+            if (statusSubtitle) {
+              statusSubtitle.textContent =
+                "Erro ao verificar. Tentando novamente...";
+            }
+            pixCheckPaymentInterval = setInterval(() => {
+              if (paymentConfirmed) {
+                clearInterval(pixCheckPaymentInterval);
+                return;
+              }
+
+              verificarPagamentoModal(idTransacao)
+                .then((data) => {
+                  updatePaymentStatusModal(data, statusSubtitle);
+                  if (isPaymentPaidModal(data)) {
+                    console.log(
+                      "✅ [Polling 1] Pagamento encontrado (desconto)"
+                    );
+                    clearInterval(pixCheckPaymentInterval);
+                    handlePaymentConfirmedModalDesconto(
+                      idTransacao,
+                      "Polling 1 (verifyPayment.php)"
+                    );
+                  }
+                })
+                .catch((error) => {
+                  console.error("❌ [Polling 1] Erro na verificação:", error);
+                });
+            }, 8000);
+          });
+
+        // Inicia polling direto na API em paralelo
+        console.log(
+          "🚀 Iniciando polling direto na API em paralelo (desconto)..."
+        );
+        pixPollingDiretoCleanup = iniciarPollingDiretoAPI(idTransacao);
+      }
+
+      // Função para lidar com pagamento confirmado de desconto
+      async function handlePaymentConfirmedModalDesconto(
+        idTransacao,
+        origem = "Desconhecido"
+      ) {
+        if (paymentConfirmed) {
+          console.log(
+            `⏹️ Pagamento já foi confirmado anteriormente por: ${origem}, ignorando chamada duplicada`
+          );
+          return;
+        }
+
+        paymentConfirmed = true;
+
+        const cliente = getClienteDataModal();
+        const valor = 19.9;
+
+        console.log("=".repeat(60));
+        console.log(
+          `🎉 PAGAMENTO CONFIRMADO (DESCONTO) POR: ${origem.toUpperCase()}`
+        );
+        console.log(`💰 Transaction ID: ${idTransacao}`);
+        console.log("=".repeat(60));
+
+        // Limpa ambos os intervalos de polling
+        if (pixCheckPaymentInterval) {
+          clearInterval(pixCheckPaymentInterval);
+          pixCheckPaymentInterval = null;
+        }
+        if (pixPollingDiretoCleanup) {
+          pixPollingDiretoCleanup();
+          pixPollingDiretoCleanup = null;
+        }
+
+        const statusElement = document.getElementById("pix-payment-status");
+        if (statusElement) {
+          statusElement.innerHTML = `
+            <div class="pix-status-content">
+              <div class="pix-status-icon" style="color: #28a745;">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="pix-status-text">
+                <p class="pix-status-title" style="color: #28a745;">Pagamento confirmado!</p>
+                <p class="pix-status-subtitle">Redirecionando...</p>
+              </div>
+            </div>
+          `;
+        }
+
+        // Preserva parâmetros UTM ao redirecionar
+        const utmParams = getUtmParamsModal();
+        const utmString = new URLSearchParams(utmParams).toString();
+        const redirectUrl =
+          "upsell/index.html" + (utmString ? "?" + utmString : "");
+
+        console.log(
+          "⏳ Aguardando 2.5 segundos antes de redirecionar (desconto)..."
+        );
+        setTimeout(() => {
+          console.log("🔄 Redirecionando para upsell...");
+          window.location.href = redirectUrl;
+        }, 2500);
+      }
+
+      // ============================================
+      // AÇÕES DOS BOTÕES DO MODAL DE DESCONTO
+      // ============================================
+
+      // Função chamada quando usuário aceita o desconto
+      function aceitarDesconto() {
+        console.log("✅ Usuário aceitou o desconto");
+        abrirModalPixDesconto();
+      }
+
+      // Função chamada quando usuário recusa o desconto
+      function recusarDesconto() {
+        console.log("❌ Usuário recusou o desconto");
+
+        // Limpa o back redirect
+        if (backRedirectInterval) {
+          clearInterval(backRedirectInterval);
+          backRedirectInterval = null;
+        }
+        isBackRedirectActive = false;
+
+        // Fecha o modal
+        fecharModalDesconto();
+
+        // Redireciona para a página de retorno
+        window.location.href = "../retornou/index.html";
+      }
+
+      // ============================================
+      // INICIALIZAÇÃO
+      // ============================================
+
+      // Inicializa quando o DOM estiver pronto
+      document.addEventListener("DOMContentLoaded", function () {
+        // Verifica se já está na seção #nine ao carregar
+        setTimeout(function () {
+          if (isOnSectionNine()) {
+            initBackRedirect();
+          }
+          // Observa mudanças futuras
+          observeSectionChanges();
+        }, 500);
+      });
+    </script>
+  </body>
+</html>

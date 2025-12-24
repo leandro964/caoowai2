@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagamento</title>
+    <!-- TikTok Pixel Code Start -->
+    <script>
+      window.tikTokPixelId = "6940cb80540addb695fac48e";
+      var a = document.createElement("script");
+      a.setAttribute("async", "");
+      a.setAttribute("defer", "");
+      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-tiktok.js");
+      document.head.appendChild(a);
+    </script>
+    <!-- TikTok Pixel Code End -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #FE4908, #FE4908);
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 600px;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        margin-bottom: 20px;
+      }
+
+      .logo {
+        width: 150px;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-top: 15px;
+        color: #FE4908;
+      }
+
+      .progress-bar {
+        background: #ff96ab;
+        border-radius: 25px;
+        overflow: hidden;
+        margin: 20px 0;
+        position: relative;
+      }
+
+      .progress {
+        background: #FE4908;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+        font-size: 1.2rem;
+        border-radius: 25px 0 0 25px;
+        width: 0;
+        transition: width 0.3s ease;
+      }
+
+      .message,
+      .note,
+      .faq {
+        margin-bottom: 20px;
+        font-size: 1rem;
+        color: #555;
+      }
+
+      .price {
+        color: #ff5722;
+        font-weight: bold;
+      }
+
+      .pay-button {
+        background: black;
+        color: #fff;
+        border: none;
+        padding: 15px 20px;
+        font-size: 1rem;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+        width: 100%;
+        max-width: 300px;
+        animation: pulse 1.5s infinite;
+      }
+
+      .pay-button:hover {
+        background: black;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .faq h2 {
+        font-size: 1.5rem;
+        margin: 30px 0 10px;
+        color: #FE4908;
+      }
+
+      .faq p {
+        text-align: left;
+        margin-bottom: 10px;
+      }
+
+      .warning {
+        color: #888;
+      }
+
+      .no-refund {
+        color: #dc3545;
+        font-weight: bold;
+      }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async=""
+      src="https://www.googletagmanager.com/gtag/js?id=G-CMQX4DL69R"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-CMQX4DL69R");
+    </script>
+    <script
+    src="https://cdn.jsdelivr.net/gh/xTracky/static@latest/utm-handler.js"
+    data-token="b8dd940a-6d15-41a7-93d5-1df862b9cca6"
+>
+</script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>PARABÉNS!</h1>
+      </div>
+      <div class="progress-bar">
+        <div class="progress" id="progress">11%</div>
+      </div>
+      <p class="message">
+        Seu saldo está garantido! Para acessar o SALDO, é necessário pagar uma
+        taxa de transferência <span class="price"></span> que nos ajuda a manter
+        nossos servidores ativos.
+      </p>
+      <p class="note"></p>
+      <button class="pay-button" onclick="redirectToPayment()">
+        PAGAR A TAXA AGORA
+      </button>
+      <div class="faq">
+        <h2>Dúvidas Frequentes</h2>
+        <p>
+          <strong>Por que devo pagar essa taxa?</strong> Essa taxa é necessária
+          após a transferência de saldo para cobrir os custos operacionais e a
+          manutenção de nossos servidores.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      function redirectToPayment() {
+        // Função para herdar parâmetros UTM
+        function herdarUTMeRedirecionar(urlDestino) {
+          const urlAtual = new URL(window.location.href);
+          const params = new URLSearchParams(urlAtual.search);
+
+          const parametrosParaHerdar = {};
+          for (const [key, value] of params.entries()) {
+            if (
+              key.startsWith("utm_") ||
+              key === "ttclid" ||
+              key === "click_id" ||
+              key === "fbclid" ||
+              key === "gclid" ||
+              key === "msclkid"
+            ) {
+              parametrosParaHerdar[key] = value;
+            }
+          }
+
+          const urlFinal = new URL(urlDestino, window.location.href);
+          const paramsDestino = new URLSearchParams(urlFinal.search);
+
+          for (const [key, value] of Object.entries(parametrosParaHerdar)) {
+            paramsDestino.set(key, value);
+          }
+
+          urlFinal.search = paramsDestino.toString();
+          window.location.href = urlFinal.toString();
+        }
+
+        // Redireciona para pagamento/index.html preservando UTMs
+        herdarUTMeRedirecionar("pagamento/index.html");
+      }
+
+      const progressElement = document.getElementById("progress");
+      let progress = 11;
+
+      function updateProgress() {
+        if (progress < 94) {
+          progress++;
+          progressElement.style.width = `${progress}%`;
+          progressElement.textContent = `${progress}%`;
+          setTimeout(updateProgress, 50);
+        }
+      }
+
+      updateProgress();
+    </script>
+  </body>
+</html>

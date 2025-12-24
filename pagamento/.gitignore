@@ -1,0 +1,14 @@
+# Logs
+webhook_log.txt
+*.log
+
+# Arquivos de transações (contém dados sensíveis)
+transactions.json
+
+# Arquivos temporários
+*.tmp
+*.cache
+
+# Configurações locais (se necessário)
+config.local.php
+
