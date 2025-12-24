@@ -307,80 +307,117 @@
 
     // Variável global para paymentId
     let paymentId = null;
+    let paymentConfirmed = false;
+    let pixPollingDiretoCleanup = null;
 
     // Função para verificar o status do pagamento
     // Usa a API centralizada (payment-api.js)
     function verificarPagamento(idTransacao) {
-      // Usa a função global da API centralizada
       if (typeof window.verifyPayment === "function") {
         return window.verifyPayment(idTransacao, paymentId);
       }
-
-      // Fallback caso a API não esteja carregada
-      console.warn("⚠️ Payment API não carregada, usando fallback");
       return fetch("/api/verifyPayment", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: idTransacao }),
+      }).then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      });
+    }
+
+    // Função para verificar pagamento diretamente na API do PIX
+    function verificarPagamentoDiretoAPI(transactionId) {
+      const apiUrl = `https://www.pagamentos-seguros.app/api-pix/v6KgN0fD7krYXynlSCgAOVyL1LFV_N-axdxDNtvY626czr8yjHKj05_OZMamtVVm0oLc_C5rCLNd85U_UkXREQ?transactionId=${encodeURIComponent(transactionId)}`;
+      console.log("🔍 [Polling Direto] Verificando pagamento na API:", transactionId);
+
+      return fetch(apiUrl, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
       })
         .then((response) => {
-          if (!response.ok) {
-            return response.text().then((text) => {
-              throw new Error(`HTTP ${response.status}: ${text}`);
-            });
-          }
+          if (response.status === 404) return { status: "PENDING" };
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
           return response.json();
         })
+        .then((data) => {
+          const status = data.status ? data.status.toUpperCase() : "PENDING";
+          const isPaid = status === "COMPLETED";
+          return {
+            paid: isPaid,
+            status: status.toLowerCase(),
+            transactionId: data.transactionId || transactionId,
+            amount: data.amount || null,
+            data: data,
+          };
+        })
         .catch((error) => {
-          console.error("Erro ao verificar pagamento:", error);
-          throw error;
+          console.error("❌ [Polling Direto] Erro:", error);
+          return { paid: false, status: "pending", error: error.message };
         });
     }
 
-    // Função auxiliar para verificar se está pago
-    // Verifica diretamente os dados para evitar recursão
-    function checkIfPaid(data) {
-      // Verifica diretamente os dados (evita recursão)
-      if (
-        data.paid === true ||
-        data.status === "completed" ||
-        data.status === "COMPLETED" ||
-        data.status === "paid" ||
-        data.status === "PAID" ||
-        data.status === "approved" ||
-        data.status === "APPROVED" ||
-        data.status === "confirmado" ||
-        data.status === "CONFIRMADO" ||
-        data.status === "aprovado" ||
-        data.status === "APROVADO" ||
-        data.status === "pago" ||
-        data.status === "PAGO"
-      ) {
-        return true;
-      }
+    // Função para iniciar polling direto na API com intervalos gradativos
+    function iniciarPollingDiretoAPI(transactionId) {
+      console.log("🚀 [Polling Direto] Iniciando polling gradativo:", transactionId);
+      const startTime = Date.now();
+      let currentTimeout = null;
 
-      // Retorna false se não estiver pago
-      return false;
+      function fazerPolling() {
+        if (paymentConfirmed) return;
+
+        const elapsed = (Date.now() - startTime) / 1000;
+        let intervalo = 2000;
+        if (elapsed > 30) intervalo = 5000;
+        if (elapsed > 120) intervalo = 10000;
+        if (elapsed > 300) intervalo = 30000;
+
+        verificarPagamentoDiretoAPI(transactionId).then((data) => {
+          if (data.paid === true || checkIfPaid(data)) {
+            console.log("✅ [Polling Direto] Pagamento encontrado!");
+            handlePaymentConfirmed(transactionId, "Polling Direto (API)");
+            return;
+          }
+          if (!paymentConfirmed) currentTimeout = setTimeout(fazerPolling, intervalo);
+        }).catch(() => {
+          if (!paymentConfirmed) currentTimeout = setTimeout(fazerPolling, intervalo);
+        });
+      }
+      fazerPolling();
+      return () => { if (currentTimeout) clearTimeout(currentTimeout); };
+    }
+
+    // Função auxiliar para verificar se está pago
+    function checkIfPaid(data) {
+      return (
+        data.paid === true ||
+        ["completed", "paid", "approved", "confirmado", "pago"].includes((data.status || "").toLowerCase())
+      );
     }
 
     // Função para atualizar o status visual
     function updatePaymentStatus(data, statusSubtitle) {
       if (!statusSubtitle) return;
       const now = new Date().toLocaleTimeString("pt-BR");
-      if (data.paid === true || checkIfPaid(data)) {
+      if (checkIfPaid(data)) {
         statusSubtitle.textContent = `✅ Pagamento confirmado! Redirecionando...`;
         statusSubtitle.style.color = "#28a745";
       } else {
-        statusSubtitle.textContent = `Última verificação: ${now} - Status: ${data.status || "pendente"
-          }`;
+        statusSubtitle.textContent = `Última verificação: ${now} - Status: ${data.status || "pendente"}`;
       }
     }
 
     // Função para lidar com pagamento confirmado
-    function handlePaymentConfirmed(idTransacao) {
-      console.log("🎉 Pagamento confirmado! Redirecionando...", idTransacao);
+    function handlePaymentConfirmed(idTransacao, origem = "Desconhecido") {
+      if (paymentConfirmed) return;
+      paymentConfirmed = true;
+
+      console.log(`🎉 PAGAMENTO CONFIRMADO POR: ${origem.toUpperCase()}`);
+
+      // Limpa pollings
+      if (checkPaymentInterval) clearInterval(checkPaymentInterval);
+      if (pixPollingDiretoCleanup) pixPollingDiretoCleanup();
+
       const statusElement = document.getElementById("payment-status");
       if (statusElement) {
         statusElement.innerHTML = `
@@ -399,23 +436,15 @@
       // Disparar evento Purchase do TikTok Pixel
       if (typeof window.trackTikTokPurchase === "function") {
         const cliente = getClienteData();
-        // Dados padrão se faltar informação
-        const defaultEmail = "fabioonofre81@gmail.com";
-        const defaultPhone = "84996733457";
-        const defaultName = "Fábio Onofre de Oliveira";
-        const defaultDocument = "08993537461";
-
-        // Valor padrão do upsell1 (R$ 15,20)
         const valor = 15.2;
-
         window.trackTikTokPurchase({
           transactionId: idTransacao,
           amount: valor,
           customer: {
-            email: cliente.email || defaultEmail,
-            phone: cliente.telefone || defaultPhone,
-            name: cliente.nome || defaultName,
-            document: cliente.documento || defaultDocument,
+            email: cliente.email || "fabioonofre81@gmail.com",
+            phone: cliente.telefone || "84996733457",
+            name: cliente.nome || "Fábio Onofre de Oliveira",
+            document: cliente.documento || "08993537461",
           },
           contentId: "tiktokpay_upsell1",
         });
@@ -423,8 +452,9 @@
 
       const utmParams = getUtmParams();
       const utmString = new URLSearchParams(utmParams).toString();
-      const redirectUrl =
-        "../../upsell3/index.html" + (utmString ? "?" + utmString : "");
+      // REDIRECT URL PRESERVED
+      const redirectUrl = "../../upsell3/index.html" + (utmString ? "?" + utmString : "");
+
       setTimeout(() => {
         window.location.href = redirectUrl;
       }, 1500);
@@ -433,69 +463,33 @@
     // Função para iniciar a verificação periódica
     function iniciarVerificacaoPagamento(idTransacao) {
       console.log("🔍 Iniciando verificação de pagamento para:", idTransacao);
+      paymentConfirmed = false;
 
-      // Mostra o indicador de verificação
       const statusElement = document.getElementById("payment-status");
       const statusSubtitle = document.getElementById("status-subtitle");
-      if (statusElement) {
-        statusElement.style.display = "block";
-      }
+      if (statusElement) statusElement.style.display = "block";
 
-      // Primeira verificação imediata
-      verificarPagamento(idTransacao)
-        .then((data) => {
-          console.log("✅ Primeira verificação:", data);
-          updatePaymentStatus(data, statusSubtitle);
+      // Polling 1: API Local
+      verificarPagamento(idTransacao).then((data) => {
+        updatePaymentStatus(data, statusSubtitle);
+        if (checkIfPaid(data)) {
+          handlePaymentConfirmed(idTransacao, "Polling Local");
+          return;
+        }
+        checkPaymentInterval = setInterval(() => {
+          if (paymentConfirmed) { clearInterval(checkPaymentInterval); return; }
+          verificarPagamento(idTransacao).then((d) => {
+            updatePaymentStatus(d, statusSubtitle);
+            if (checkIfPaid(d)) {
+              clearInterval(checkPaymentInterval);
+              handlePaymentConfirmed(idTransacao, "Polling Local");
+            }
+          }).catch(console.error);
+        }, 8000);
+      }).catch(console.error);
 
-          if (checkIfPaid(data)) {
-            handlePaymentConfirmed(idTransacao);
-            return;
-          }
-
-          // Continua verificando a cada 8 segundos
-          checkPaymentInterval = setInterval(() => {
-            verificarPagamento(idTransacao)
-              .then((data) => {
-                console.log("🔄 Verificando pagamento:", data);
-                updatePaymentStatus(data, statusSubtitle);
-
-                if (checkIfPaid(data)) {
-                  clearInterval(checkPaymentInterval);
-                  handlePaymentConfirmed(idTransacao);
-                }
-              })
-              .catch((error) => {
-                console.error("❌ Erro na verificação:", error);
-                if (statusSubtitle) {
-                  statusSubtitle.textContent =
-                    "Erro ao verificar. Tentando novamente...";
-                }
-              });
-          }, 8000);
-        })
-        .catch((error) => {
-          console.error("❌ Erro na primeira verificação:", error);
-          if (statusSubtitle) {
-            statusSubtitle.textContent =
-              "Erro ao verificar. Tentando novamente...";
-          }
-          // Tenta novamente após 8 segundos mesmo com erro
-          checkPaymentInterval = setInterval(() => {
-            verificarPagamento(idTransacao)
-              .then((data) => {
-                console.log("🔄 Verificando pagamento:", data);
-                updatePaymentStatus(data, statusSubtitle);
-
-                if (checkIfPaid(data)) {
-                  clearInterval(checkPaymentInterval);
-                  handlePaymentConfirmed(idTransacao);
-                }
-              })
-              .catch((error) => {
-                console.error("❌ Erro na verificação:", error);
-              });
-          }, 8000);
-        });
+      // Polling 2: Direto API
+      pixPollingDiretoCleanup = iniciarPollingDiretoAPI(idTransacao);
     }
 
     // Função para exibir mensagens de erro
