@@ -315,7 +315,7 @@
 
       // Fallback caso a API não esteja carregada
       console.warn("⚠️ Payment API não carregada, usando fallback");
-      return fetch("../../pagamento/verifyPayment.php", {
+      return fetch("/api/verifyPayment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -584,7 +584,7 @@
         const utmParams = getUtmParams();
         const utmQuery = JSON.stringify(utmParams);
 
-        fetch("../../pagamento/save-utm-query.php", {
+        fetch("/api/save-utm-query", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

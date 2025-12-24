@@ -78,7 +78,7 @@
       ...(Object.keys(utmParams).length > 0 && { utmQuery: utmParams }),
     };
 
-    const verifyUrl = BASE_PATH + "verifyPayment.php";
+    const verifyUrl = "/api/verifyPayment";
 
     console.log("📤 Verificando pagamento:", {
       url: verifyUrl,
