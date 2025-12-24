@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Seu progresso anual</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff5ef;
+      padding: 16px;
+    }
+
+    .card {
+      max-width: 900px;
+      width: 100%;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .08);
+      padding: 32px 28px;
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .left {
+      flex: 1;
+    }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.1;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+
+    h1 span.highlight {
+      color: #FE4908;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #4b5563;
+      margin-bottom: 20px;
+    }
+
+    /* imagem do calendário acima das datas */
+    .calendar-img {
+      max-width: 260px;
+      width: 100%;
+      display: block;
+      border-radius: 20px;
+      margin: 0 auto 20px auto;
+      margin-top: -15px;
+    }
+
+    /* linha de meses (container) */
+    .months {
+      position: relative;
+      padding: 8px 0;
+      margin-bottom: 18px;
+      width: 100%;
+    }
+
+    /* agrupamento das linhas de meses */
+    .months-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding-left: 0;
+    }
+
+    /* cada linha: 5 colunas (mês, conector, mês, conector, mês) */
+    .months-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      column-gap: 10px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .month-item {
+      padding: 11px 8px;
+      border-radius: 14px;
+      background: #fff0e5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #111827;
+      opacity: .5;
+      text-align: center;
+      transition:
+        opacity .2s,
+        transform .2s,
+        box-shadow .2s,
+        background .2s,
+        color .2s;
+      min-width: 0;
+    }
+
+    .month-item.active {
+      opacity: 1;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(254, 73, 8, .35);
+    }
+
+    /* meses concluídos (verde) */
+    .month-item.completed {
+      background: #ecfdf3;
+      color: #166534;
+      opacity: 1;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, .30);
+    }
+
+    /* último período pendente/vermelho (até concluir) */
+    .month-item.pending {
+      background: #fee2e2;
+      color: #b91c1c;
+      opacity: 1;
+      box-shadow: 0 4px 12px rgba(248, 113, 113, .35);
+    }
+
+    .check-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 2px solid #FE4908;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      flex-shrink: 0;
+      transition: border-color .2s, background .2s;
+    }
+
+    .check-circle svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: #FE4908;
+      stroke-width: 2;
+      transition: stroke .2s;
+    }
+
+    /* check verde para concluídos */
+    .month-item.completed .check-circle {
+      border-color: #22c55e;
+      background: #dcfce7;
+    }
+
+    .month-item.completed .check-circle svg {
+      stroke: #16a34a;
+    }
+
+    /* check vermelho para pendente */
+    .month-item.pending .check-circle {
+      border-color: #ef4444;
+      background: #fee2e2;
+    }
+
+    .month-item.pending .check-circle svg {
+      stroke: #b91c1c;
+    }
+
+    /* conectores ocupam a coluna inteira, mas visualmente são estreitos */
+    .month-connector {
+      width: 100%;
+      max-width: 20px;
+      height: 4px;
+      border-radius: 999px;
+      background: #fee2e2;
+      position: relative;
+      overflow: hidden;
+      justify-self: center;
+    }
+
+    .month-connector-fill {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      border-radius: inherit;
+      transition: width .35s linear;
+    }
+
+    .progress-info {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: none;
+      outline: none;
+      background: #FE4908;
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform .12s, box-shadow .12s, opacity .12s;
+      box-shadow: 0 10px 24px rgba(254, 73, 8, .35);
+      opacity: 0;
+      pointer-events: none;
+      margin-left: 50px;
+    }
+
+    .btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(254, 73, 8, .4);
+    }
+
+    /* LOADER KWAI – tela branca com bolinha laranja */
+    .kwai-loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+
+    .kwai-loader-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 6px solid rgba(0, 0, 0, 0.06);
+      border-top-color: #FE4908;
+      /* laranja Kwai */
+      border-right-color: #ffd600;
+      /* amarelo Kwai */
+      animation: kwai-spin 1s linear infinite;
+      margin-bottom: 18px;
+    }
+
+    .kwai-loader-text {
+      font-size: 14px;
+      color: #111827;
+      opacity: .7;
+    }
+
+    @keyframes kwai-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width:700px) {
+      .card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn {
+        margin-left: 0;
+      }
+
+      .calendar-img {
+        max-width: 240px;
+        margin-bottom: 16px;
+      }
+
+      .months-inner {
+        padding-left: 0;
+      }
+    }
+  </style>
+
+
+  <script src="https://cdn.jsdelivr.net/gh/xTracky/static@latest/utm-handler.js"
+    data-token="f2725c4f-2d5a-4299-990c-9719384d2c62">
+    </script>
+
+  <script type="text/javascript">
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "uor2t4384f");
+  </script>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="left">
+      <h1>Parabéns!<br>Você concluiu todas as atividades do ano.<br>
+        <span class="highlight">Veja seu progresso!</span>
+      </h1>
+      <p class="subtitle">
+        Estamos carregando seu histórico mês a mês. Aguarde alguns segundos
+        enquanto confirmamos todas as etapas.
+      </p>
+
+      <!-- calendario.png em cima das datas -->
+      <img src="./images/calendario-anual.png" alt="Calendário anual" class="calendar-img">
+
+      <div class="months">
+        <div class="months-inner" id="months">
+          <!-- Linha 1 -->
+          <div class="months-row">
+            <div class="month-item">
+              <div class="check-circle">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              1/2
+            </div>
+
+            <!-- CONECTOR 0 -->
+            <div class="month-connector">
+              <div class="month-connector-fill"></div>
+            </div>
+
+            <div class="month-item">
+              <div class="check-circle">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              3/4
+            </div>
+
+            <!-- CONECTOR 1 -->
+            <div class="month-connector">
+              <div class="month-connector-fill"></div>
+            </div>
+
+            <div class="month-item">
+              <div class="check-circle">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              5/6
+            </div>
+          </div>
+
+          <!-- Linha 2 -->
+          <div class="months-row">
+            <div class="month-item">
+              <div class="check-circle">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              7/8
+            </div>
+
+            <!-- CONECTOR 2 -->
+            <div class="month-connector">
+              <div class="month-connector-fill"></div>
+            </div>
+
+            <div class="month-item">
+              <div class="check-circle">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              9/10
+            </div>
+
+            <!-- CONECTOR 3 -->
+            <div class="month-connector">
+              <div class="month-connector-fill"></div>
+            </div>
+
+            <div class="month-item pending">
+              <div class="check-circle">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              11/12
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-info" id="progressText">
+        Iniciando carregamento de Jan/Fev…
+      </div>
+
+      <button style="margin-left:70px;" class="btn" id="claimBtn">Resgatar progresso</button>
+    </div>
+  </div>
+
+  <!-- TELA BRANCA DE CARREGAMENTO KWAI -->
+  <div class="kwai-loader-overlay" id="kwai-loader">
+    <div class="kwai-loader-circle"></div>
+    <div class="kwai-loader-text">Validando acesso...</div>
+  </div>
+
+  <script>
+    const monthItems = Array.from(document.querySelectorAll('.month-item'));
+    const connectorFills = Array.from(document.querySelectorAll('.month-connector-fill'));
+    const progressText = document.getElementById('progressText');
+    const claimBtn = document.getElementById('claimBtn');
+
+    const labels = [
+      'Jan/Fev',
+      'Mar/Abr',
+      'Mai/Jun',
+      'Jul/Ago',
+      'Set/Out',
+      'Nov/Dez'
+    ];
+
+    let currentIndex = 0;
+    const totalSteps = labels.length;
+    const stepTime = 900;
+    let loop;
+
+    function updateStep() {
+      monthItems.forEach((item, i) => {
+        const isLast = (i === totalSteps - 1);
+
+        item.classList.toggle('active', i === currentIndex);
+
+        const completed = !isLast && i < currentIndex;
+        item.classList.toggle('completed', completed);
+      });
+
+      // conectores enchendo conforme o progresso
+      connectorFills.forEach((fill, i) => {
+        let fillIt = false;
+        if (i === 0 && currentIndex >= 1) fillIt = true;
+        if (i === 1 && currentIndex >= 2) fillIt = true;
+        if (i === 2 && currentIndex >= 4) fillIt = true;
+        if (i === 3 && currentIndex >= 5) fillIt = true;
+        fill.style.width = fillIt ? '100%' : '0%';
+      });
+
+      if (currentIndex < totalSteps - 2) {
+        progressText.textContent = 'Carregando ' + labels[currentIndex + 1] + '…';
+      } else if (currentIndex === totalSteps - 2) {
+        progressText.textContent = 'Carregando último período (Nov/Dez)…';
+      } else {
+        // Quando termina tudo: deixa 11/12 verde como os outros
+        const lastItem = monthItems[totalSteps - 1];
+        lastItem.classList.remove('pending');
+        lastItem.classList.add('completed');
+
+        progressText.textContent = 'Seu progresso foi concluído com sucesso!';
+        claimBtn.classList.add('visible');
+        clearInterval(loop);
+      }
+    }
+
+    updateStep();
+
+    loop = setInterval(() => {
+      if (currentIndex < totalSteps - 1) {
+        currentIndex++;
+        updateStep();
+      }
+    }, stepTime);
+
+    // Mostra a tela branca com bolinha azul/rosa por 3s e depois redireciona
+    function mostrarLoaderKwai() {
+      const loader = document.getElementById('kwai-loader');
+      if (loader) {
+        loader.style.display = 'flex';
+      }
+
+      // opcional: esconde o card por trás
+      const card = document.querySelector('.card');
+      if (card) card.style.visibility = 'hidden';
+
+      setTimeout(() => {
+        window.location.href = './front/index.html' + window.location.search;
+      }, 3000);
+    }
+
+    // Redireciona ao clicar em "Resgatar progresso" com o loader
+    claimBtn.addEventListener('click', () => {
+      mostrarLoaderKwai();
+    });
+  </script>
+
+
+
+
+
+</body>
+
+</html>
